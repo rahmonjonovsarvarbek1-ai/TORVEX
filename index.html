@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>XEBEC | Professional Master Platform - Created by [Sarvarbek Rahmonjonov]</title>
+    
+    <meta name="description" content="XEBEC - Professional ustalar va qurilish bozori platformasi. Eng yaxshi mutaxassislar va qurilish materiallari bir joyda. Loyiha muallifi: [ISMINGIZ].">
+    <meta name="keywords" content="XEBEC, usta topish, qurilish bozori, santexnik, elektrik, [ISMINGIZ], Uzbekistan masters">
+    <meta name="author" content="[Sarvarbek Rahmonjonov]">
+    <meta name="robots" content="index, follow">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://xebec.uz/">
+    <meta property="og:title" content="XEBEC | Professional Master Platform">
+    <meta property="og:description" content="Malakali ustalar va sifatli qurilish materiallari. Loyiha muallifi: [ISMINGIZ].">
+    <meta property="og:image" content="https://xebec.uz/assets/og-image.jpg"> <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="XEBEC - Created by [ISMINGIZ]">
+    <meta name="twitter:description" content="Eng yaxshi ustalar va qurilish mollari platformasi.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="icon" type="image/png" href="favicon.png">
+    
+    <link rel="stylesheet" href="style.css">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "XEBEC",
+      "url": "https://xebec.uz",
+      "author": {
+        "@type": "Person",
+        "name": "[Sarvarbek Rahmonjonov]"
+      },
+      "description": "Professional ustalar va qurilish bozori uchun zamonaviy platforma."
+    }
+    </script>
+</head>
+<body>
+
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo-area">
+                <div class="logo-icon"><i class="fas fa-bolt"></i></div>
+                <span class="logo-text">XEBEC</span>
+            </div>
+            
+            <nav class="side-nav">
+                <p class="nav-label">Asosiy Menu</p>
+                <ul>
+                    <li onclick="showSection('dash')" class="nav-item active" id="li-dash">
+                        <i class="fas fa-chart-pie"></i> <span>Dashboard</span>
+                    </li>
+                    <li onclick="showSection('ustalar')" class="nav-item" id="li-ustalar">
+                        <i class="fas fa-user-ninja"></i> <span>Ustalar</span>
+                    </li>
+                    <li onclick="showSection('bozor')" class="nav-item" id="li-bozor">
+                        <i class="fas fa-shopping-bag"></i> <span>Xebec Bozor</span>
+                    </li>
+                    <li onclick="showSection('news')" class="nav-item" id="li-news">
+                        <i class="fas fa-newspaper"></i> <span>Yangiliklar</span>
+                    </li>
+                </ul>
+
+                <p class="nav-label" style="margin-top: 20px;">Shaxsiy Kabinet</p>
+                <ul>
+                    <li onclick="showSection('profil')" class="nav-item" id="li-profil">
+                        <i class="fas fa-user-circle"></i> <span>Mening Profilim</span>
+                    </li>
+                    <li onclick="showSection('sozlamalar')" class="nav-item" id="li-settings">
+                        <i class="fas fa-cog"></i> <span>Sozlamalar</span>
+                    </li>
+                </ul>  
+                 <div class="mobile-nav-toggle" onclick="toggleMenu()">
+                   <i class="fas fa-bars"></i>
+                  </div>
+            </nav>
+
+           <aside class="side-nav">
+    <nav class="nav-content">
+        </nav>
+
+    <div class="sidebar-footer">
+        <div class="icon-circle" onclick="toggleAuthModal('open')" title="Tizimga kirish">
+            <i class="far fa-user"></i>
+        </div>
+        <span class="nav-text">Ro'yhatdan o'tish</span>
+    </div>
+</aside>
+
+            <div class="pro-card">
+                <div class="pro-badge">PRO</div>
+                <p>Barcha imkoniyatlarni oching</p>
+                <button class="btn-pro">Obuna bo'lish</button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="search-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="globalSearch" placeholder="Xizmatlar yoki ustalarni izlash..." onkeyup="smartSearch()">
+                </div>
+                
+                <div class="header-right">
+                    <div class="status-pill"><span class="online-dot"></span> Online</div>
+                    <div class="action-icons">
+                        <div class="icon-circle notification-trigger">
+                            <i class="far fa-bell"></i>
+                            <span class="count">3</span>
+                        </div>
+                        <div class="icon-circle"><i class="far fa-envelope"></i></div>
+                    </div>
+                    <div class="profile-pill" onclick="showSection('profil')">
+                        <img src="https://i.pravatar.cc/150?img=11" alt="User">
+                        <div class="profile-meta">
+                            <span class="user-name">Shaxs</span>
+                            <span class="user-status">Ma'lumotlari</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <section id="dash" class="content-section active-section">
+    <div class="welcome-banner-advanced">
+        <div class="banner-overlay"></div>
+        <div class="banner-content">
+            <span class="badge-promo">Yangilik</span>
+            <h1>Xush kelibsiz, <span class="text-gradient">XEBEC</span> dunyosiga!</h1>
+            <p>Bugun bozorda sement narxi <span class="price-drop">-5%</span> ga arzonlashdi. Qurilishni hoziroq boshlang!</p>
+            <div class="banner-btns">
+                <button class="btn-banner-primary">Bozorga o'tish</button>
+                <button class="btn-banner-outline"><i class="fas fa-play"></i> Video qo'llanma</button>
+            </div>
+        </div>
+        <div class="banner-stats-mini">
+            <div class="mini-stat"><strong>2k+</strong><span>Mahsulotlar</span></div>
+            <div class="mini-stat"><strong>500+</strong><span>Yangi ustalar</span></div>
+        </div>
+    </div>
+
+    <div class="quick-actions-grid">
+        <div class="action-item">
+            <div class="action-icon blue"><i class="fas fa-plus"></i></div>
+            <span>E'lon berish</span>
+        </div>
+        <div class="action-item">
+            <div class="action-icon green"><i class="fas fa-wallet"></i></div>
+            <span>Balans</span>
+        </div>
+        <div class="action-item">
+            <div class="action-icon orange"><i class="fas fa-bolt"></i></div>
+            <span>Premium</span>
+        </div>
+        <div class="action-item">
+            <div class="action-icon purple"><i class="fas fa-headset"></i></div>
+            <span>Yordam</span>
+        </div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card glass-effect">
+            <div class="stat-main">
+                <div class="stat-icon purple"><i class="fas fa-users"></i></div>
+                <div class="stat-info">
+                    <h3 class="counter" data-target="1240">0</h3>
+                    <p>Jami Ustalar</p>
+                </div>
+            </div>
+            <div class="stat-chart"><span class="trend up"><i class="fas fa-arrow-up"></i> 12%</span></div>
+        </div>
+        
+        <div class="stat-card glass-effect">
+            <div class="stat-main">
+                <div class="stat-icon orange"><i class="fas fa-hard-hat"></i></div>
+                <div class="stat-info">
+                    <h3 class="counter" data-target="452">0</h3>
+                    <p>Faol buyurtmalar</p>
+                </div>
+            </div>
+            <div class="stat-chart"><span class="trend up"><i class="fas fa-arrow-up"></i> 5%</span></div>
+        </div>
+
+        <div class="stat-card glass-effect">
+            <div class="stat-main">
+                <div class="stat-icon green"><i class="fas fa-coins"></i></div>
+                <div class="stat-info">
+                    <h3 class="counter" data-target="12500000">0</h3>
+                    <p>Savdo (so'm)</p>
+                </div>
+            </div>
+            <div class="stat-chart"><span class="trend down"><i class="fas fa-arrow-down"></i> 2%</span></div>
+        </div>
+    </div>
+
+    <div class="section-title-area">
+        <h2 class="sub-title">Top reytingli mutaxassislar</h2>
+        <a href="#" class="view-all" onclick="showSection('ustalar')">Barchasini ko'rish <i class="fas fa-chevron-right"></i></a>
+    </div>
+    <div id="featuredMasters" class="grid-container">
+        </div>
+</section>
+
+<section id="bozor" class="content-section">
+    <div class="bozor-header">
+        <div class="bozor-title">
+            <h2>Xebec Marketplace <span class="badge-new">Yangilandi</span></h2>
+            <p>Eng sifatli qurilish materiallari va asbob-uskunalar bir joyda</p>
+        </div>
+        <div class="cart-preview" onclick="toggleCart()">
+            <i class="fas fa-shopping-cart"></i>
+            <span id="cartCount">0</span>
+        </div>
+    </div>
+
+    <div class="market-categories">
+        <button class="cat-chip active" onclick="filterMarket('all')">Hammasi</button>
+        <button class="cat-chip" onclick="filterMarket('materials')"><i class="fas fa-bricks"></i> Materiallar</button>
+        <button class="cat-chip" onclick="filterMarket('tools')"><i class="fas fa-tools"></i> Asboblar</button>
+        <button class="cat-chip" onclick="filterMarket('paints')"><i class="fas fa-paint-roller"></i> Bo'yoqlar</button>
+        <button class="cat-chip" onclick="filterMarket('electric')"><i class="fas fa-plug"></i> Elektr</button>
+    </div>
+
+    <div class="market-grid" id="marketGrid">
+        <div class="product-card" data-category="tools">
+            <div class="product-badge">Top</div>
+            <div class="product-img">
+                <img src="https://images.unsplash.com/photo-1581147036324-c17ac41dfa6c?auto=format&fit=crop&q=80&w=400" alt="Drill">
+            </div>
+            <div class="product-info">
+                <span class="p-cat">Asboblar</span>
+                <h4>Bosch Professional Drel</h4>
+                <div class="p-rating"><i class="fas fa-star"></i> 4.9 <span>(120 ta sharh)</span></div>
+                <div class="p-footer">
+                    <div class="p-price">1,250,000 <span>UZS</span></div>
+                    <button class="add-cart-btn" onclick="addToCart(this)"><i class="fas fa-plus"></i></button>
+                </div>
+            </div>
+        </div>
+        </div>
+</section>
+
+<section id="news" class="content-section">
+    <div class="news-header-area">
+        <div class="news-title">
+            <h2>Soha Yangiliklari</h2>
+            <p>Qurilish va texnologiya olamidagi so'nggi o'zgarishlar</p>
+        </div>
+        <div class="news-filters">
+            <button class="filter-chip active">Barchasi</button>
+            <button class="filter-chip">Texnologiya</button>
+            <button class="filter-chip">Bozor tahlili</button>
+        </div>
+    </div>
+
+    <div class="featured-news-card">
+        <div class="featured-img">
+            <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&q=80&w=800" alt="Construction">
+            <span class="news-badge">Hafta yangiligi</span>
+        </div>
+        <div class="featured-content">
+            <div class="news-meta">
+                <span><i class="far fa-calendar"></i> 7-Mart, 2026</span>
+                <span><i class="far fa-clock"></i> 5 daqiqa o'qish</span>
+            </div>
+            <h3>O'zbekistonda 3D-printer yordamida uylar qurish boshlanmoqda</h3>
+            <p>Yangi texnologiya qurilish xarajatlarini 30% ga kamaytirish imkonini beradi. Mutaxassislar ushbu metodning afzalliklari haqida...</p>
+            <button class="btn-read-more">To'liq o'qish <i class="fas fa-arrow-right"></i></button>
+        </div>
+    </div>
+
+    <div class="news-grid-advanced" id="newsGrid">
+        <div class="mini-news-card">
+            <div class="mini-img">
+                <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&q=80&w=400" alt="Tools">
+            </div>
+            <div class="mini-content">
+                <span class="news-tag">Bozor</span>
+                <h4>Sement narxi pasayishi kutilmoqda</h4>
+                <div class="mini-footer">
+                    <span>1 soat oldin</span>
+                    <div class="mini-actions">
+                        <i class="far fa-bookmark" title="Saqlash"></i>
+                        <i class="fas fa-share-alt" title="Ulashish"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mini-news-card">
+            <div class="mini-img">
+                <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&q=80&w=400" alt="Tech">
+            </div>
+            <div class="mini-content">
+                <span class="news-tag">Texnika</span>
+                <h4>Yangi avlod ekskavatorlari taqdim etildi</h4>
+                <div class="mini-footer">
+                    <span>4 soat oldin</span>
+                    <div class="mini-actions">
+                        <i class="far fa-bookmark"></i>
+                        <i class="fas fa-share-alt"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+            <section id="profil" class="content-section">
+    <div class="profile-page-wrapper">
+        <div class="profile-header">
+            <div class="cover-photo">
+                <button class="edit-cover"><i class="fas fa-pen"></i></button>
+            </div>
+            <div class="profile-main">
+                <div class="avatar-container">
+                    <img src="https://i.pravatar.cc/150?img=11" id="userAvatar" alt="User Avatar">
+                    <label for="avatarInput" class="change-photo">
+                        <i class="fas fa-camera"></i>
+                        <input type="file" id="avatarInput" hidden accept="image/*">
+                    </label>
+                </div>
+                <div class="profile-title">
+                    <h2 id="displayFullName">Admin User <i class="fas fa-check-circle verified"></i></h2>
+                    <p id="displayLocation"><i class="fas fa-map-marker-alt"></i> Toshkent, O'zbekiston</p>
+                </div>
+                <div class="profile-actions">
+                    <button class="btn-edit" onclick="openEditModal()"><i class="fas fa-user-edit"></i> Tahrirlash</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-sidebar-info">
+    <div class="info-card animate-slide-up">
+        <div class="card-header">
+            <h3><i class="fas fa-id-card"></i> Shaxsiy ma'lumotlar</h3>
+            <span class="user-status-tag">VIP</span>
+        </div>
+        <div class="info-list">
+            <div class="info-row">
+                <div class="info-label"><i class="fas fa-hashtag"></i> ID:</div>
+                <strong id="displayID">#8821</strong>
+            </div>
+            <div class="info-row">
+                <div class="info-label"><i class="fas fa-phone-alt"></i> Tel:</div>
+                <strong id="displayPhone">+998 90 123 45 67</strong>
+            </div>
+            <div class="info-row">
+                <div class="info-label"><i class="fas fa-briefcase"></i> Soha:</div>
+                <strong id="displayJob">Bosh Administrator</strong>
+            </div>
+            <div class="info-row">
+                <div class="info-label"><i class="fas fa-calendar-alt"></i> Ro'yxatdan o'tgan:</div>
+                <strong>12.05.2023</strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="wallet-card animate-slide-up" style="animation-delay: 0.1s">
+        <div class="wallet-info">
+            <p>Joriy balans</p>
+            <h2 id="displayBalance">500,000 <span>UZS</span></h2>
+        </div>
+        <div class="wallet-actions">
+            <button class="btn-topup"><i class="fas fa-plus"></i> To'ldirish</button>
+            <button class="btn-withdraw"><i class="fas fa-arrow-up"></i> Yechish</button>
+        </div>
+        <div class="balance-footer">
+            <i class="fas fa-info-circle"></i> Keyingi to'lovga 3 kun qoldi
+        </div>
+    </div>
+
+    <div class="rating-card animate-slide-up" style="animation-delay: 0.2s">
+        <p>Foydalanuvchi reytingi</p>
+        <div class="rating-stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star-half-alt"></i>
+            <span>4.8</span>
+        </div>
+        <div class="progress-container">
+            <div class="progress-bar" style="width: 85%"></div>
+        </div>
+        <small>Siz ustalarning top 10% ligidasiz</small>
+    </div>
+</div>
+
+            <div class="profile-content">
+    <div class="tabs-container">
+        <div class="tabs">
+            <button class="tab-item active" onclick="switchTab(this, 'ads')">
+                <i class="fas fa-th-large"></i> 
+                <span>E'lonlarim</span>
+                <span class="tab-badge">0</span>
+            </button>
+            <button class="tab-item" onclick="switchTab(this, 'reviews')">
+                <i class="fas fa-star"></i> 
+                <span>Sharhlar</span>
+                <span class="tab-badge secondary">12</span>
+            </button>
+            <button class="tab-item" onclick="switchTab(this, 'security')">
+                <i class="fas fa-shield-alt"></i> 
+                <span>Xavfsizlik</span>
+            </button>
+        </div>
+        <div class="tabs-indicator"></div> </div>
+
+    <div class="tab-content-wrapper" id="tabContent">
+        <div class="animate-fade-in">
+            <div class="content-header">
+                <h3>Faol e'lonlaringiz</h3>
+                <button class="btn-add-new"><i class="fas fa-plus-circle"></i> Yangi qo'shish</button>
+            </div>
+            
+            <div class="empty-state-advanced">
+                <div class="illustration-box">
+                    <i class="fas fa-folder-plus"></i>
+                </div>
+                <h4>Hozircha hech narsa yo'q</h4>
+                <p>Siz hali biron bir xizmat yoki mahsulot bo'yicha e'lon bermadingiz. Birinchi e'loningizni hoziroq joylashtiring!</p>
+                <div class="quick-tips">
+                    <span><i class="fas fa-lightbulb"></i> Maslahat: Sifatli rasm ko'proq mijoz jalb qiladi.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div id="editModal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2>Profilni tahrirlash</h2>
+                <button onclick="closeEditModal()" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label>Ism va Familiya</label>
+                    <input type="text" id="inputFullName" placeholder="Ismingizni kiriting">
+                </div>
+                <div class="input-group">
+                    <label>Telefon raqam</label>
+                    <input type="text" id="inputPhone" placeholder="+998">
+                </div>
+                <div class="input-group">
+                    <label>Manzil</label>
+                    <input type="text" id="inputLocation" placeholder="Masalan: Toshkent">
+                </div>
+                <div class="input-group">
+                    <label>Mutaxassislik</label>
+                    <input type="text" id="inputJob" placeholder="Sohangiz">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeEditModal()">Bekor qilish</button>
+                <button class="btn-save" onclick="saveProfile()">Saqlash</button>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="sozlamalar" class="content-section">
+    <div class="settings-container">
+        <div class="settings-header">
+            <h2>Tizim Sozlamalari</h2>
+            <p>Platformadan foydalanishni o'zingizga moslashtiring</p>
+        </div>
+
+        <div class="settings-grid">
+            <div class="settings-card">
+                <div class="card-icon"><i class="fas fa-paint-brush"></i></div>
+                <div class="card-body">
+                    <h4>Interfeys va Dizayn</h4>
+                    <div class="setting-item">
+                        <div class="item-info">
+                            <span>Tungi rejim (Dark Mode)</span>
+                            <p>Ko'zingizni asrash uchun to'q rangli mavzuni yoqing</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <div class="item-info">
+                            <span>Asosiy rang</span>
+                            <p>Brend rangini tanlang</p>
+                        </div>
+                        <div class="color-picker">
+                            <span class="color-dot blue active"></span>
+                            <span class="color-dot purple"></span>
+                            <span class="color-dot orange"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-card">
+                <div class="card-icon"><i class="fas fa-bell"></i></div>
+                <div class="card-body">
+                    <h4>Bildirishnomalar</h4>
+                    <div class="setting-item">
+                        <span>Email xabarnomalar</span>
+                        <input type="checkbox" checked>
+                    </div>
+                    <div class="setting-item">
+                        <span>SMS tasdiqlash</span>
+                        <input type="checkbox">
+                    </div>
+                    <div class="setting-item">
+                        <span>Yangi buyurtmalar haqida xabar</span>
+                        <input type="checkbox" checked>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-card danger-zone">
+                <div class="card-icon"><i class="fas fa-user-shield"></i></div>
+                <div class="card-body">
+                    <h4>Hisob Xavfsizligi</h4>
+                    <div class="setting-item">
+                        <button class="btn-outline-settings">Parolni o'zgartirish</button>
+                    </div>
+                    <div class="setting-item">
+                        <div class="item-info">
+                            <span class="text-danger">Hisobni o'chirish</span>
+                            <p>Barcha ma'lumotlaringiz butunlay o'chib ketadi</p>
+                        </div>
+                        <button class="btn-danger-sm">O'chirish</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+            <section id="ustalar" class="content-section">
+    <div class="masters-page-header">
+        <div class="header-main">
+            <h2>Mutaxassislar katalogi</h2>
+            <p>O'z ishining ustalarini tajribasi va reytingi bo'yicha toping</p>
+        </div>
+        
+        <div class="search-sort-bar">
+            <div class="search-input-wrapper">
+                <i class="fas fa-search"></i>
+                <input type="text" id="masterSearch" placeholder="Ism yoki mutaxassislik bo'yicha qidirish..." onkeyup="searchMasters()">
+            </div>
+            <select class="sort-select" onchange="sortMasters(this.value)">
+                <option value="rating">Reyting bo'yicha</option>
+                <option value="exp">Tajriba bo'yicha</option>
+                <option value="price">Narx (arzonroq)</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="filter-container">
+        <div class="filter-chips">
+            <button class="chip active" onclick="filterByJob('all')">Barchasi</button>
+            <button class="chip" onclick="filterByJob('Elektrik')"><i class="fas fa-bolt"></i> Elektrik</button>
+            <button class="chip" onclick="filterByJob('Santexnik')"><i class="fas fa-faucet"></i> Santexnik</button>
+            <button class="chip" onclick="filterByJob('Malyar')"><i class="fas fa-paint-roller"></i> Malyar</button>
+            <button class="chip" onclick="filterByJob('Kafelchi')"><i class="fas fa-th"></i> Kafelchi</button>
+        </div>
+        <span class="results-count">Jami: <b id="totalMasters">0</b> ta mutaxassis</span>
+    </div>
+
+    <div id="mastersGrid" class="grid-container-advanced">
+        </div>
+</section>
+
+        </main>
+    </div>
+
+    <div class="fab-main" onclick="openQuickAction()" title="Tezkor amal">
+        <i class="fas fa-plus"></i>
+    </div>
+
+    <div id="loginModal" class="modal-overlay">
+    <div class="auth-card">
+        <button onclick="toggleAuthModal('login')" class="close-auth">&times;</button>
+        
+        <div class="auth-header">
+            <div class="auth-logo">X</div>
+            <h2>XEBEC-ga xush kelibsiz</h2>
+            <p id="authSubtitle">Davom etish uchun hisobingizga kiring</p>
+        </div>
+
+        <div class="auth-tabs">
+            <button class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Kirish</button>
+            <button class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')">Ro'yxatdan o'tish</button>
+        </div>
+
+        <form id="authForm" onsubmit="handleAuth(event)">
+            <div class="input-group-auth">
+                <label><i class="far fa-envelope"></i> Email yoki Telefon</label>
+                <input type="text" id="authEmail" placeholder="example@mail.com" required>
+            </div>
+            
+            <div class="input-group-auth">
+                <label><i class="fas fa-lock"></i> Parol</label>
+                <input type="password" id="authPass" placeholder="••••••••" required>
+            </div>
+
+            <div id="registerFields" style="display: none;">
+                <div class="input-group-auth">
+                    <label><i class="far fa-user"></i> To'liq ismingiz</label>
+                    <input type="text" id="authName" placeholder="Ali Valiyev">
+                </div>
+                <div class="input-group-auth">
+                    <label><i class="fas fa-briefcase"></i> Mutaxassislik</label>
+                    <select id="authRole">
+                        <option value="user">Buyurtmachi (Mijoz)</option>
+                        <option value="master">Usta (Mutaxassis)</option>
+                        <option value="seller">Sotuvchi (Do'kon)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="auth-options">
+                <label class="remember-me">
+                    <input type="checkbox"> Eslab qolish
+                </label>
+                <a href="#" class="forgot-pass">Parolni unutdingizmi?</a>
+            </div>
+
+            <button type="submit" class="btn-auth-submit" id="authBtn">Kirish</button>
+        </form>
+
+        <div class="auth-divider"><span>yoki</span></div>
+
+        <div class="social-auth">
+            <button class="social-btn google"><i class="fab fa-google"></i> Google</button>
+            <button class="social-btn telegram"><i class="fab fa-telegram-plane"></i> Telegram</button>
+        </div>
+    </div>
+</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
