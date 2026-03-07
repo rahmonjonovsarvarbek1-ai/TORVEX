@@ -510,6 +510,9 @@ function addToCart(productId) {
 }
 
 function toggleMenu() {
-    const navbar = document.querySelector('nav');
-    navbar.classList.toggle('active');
+    const navbar = document.querySelector('.side-nav'); // Nuqta qo'yishni unutmang!
+    if (navbar) {
+        navbar.classList.toggle('active');
+        console.log("Menyu holati o'zgardi!");
+    }
 }
