@@ -1563,24 +1563,18 @@ input:checked + .slider:before { transform: translateX(22px); }
 }
 
 /* 2. Mobil ekranda sidebar-ni tartibga solamiz */
-@media screen and (max-width: 768px) {
+@media screen and (min-width: 769px) {
     .sidebar {
+        display: block !important;
         position: fixed !important;
-        left: -100% !important; /* Telefon ekranida dastlab yashirin turadi */
-        transition: 0.3s ease;
-        z-index: 10001;
+        left: 0 !important;
+        width: 260px !important;
+        visibility: visible !important;
+        opacity: 1 !important;
     }
-
-    .sidebar.active {
-        left: 0 !important; /* Tugma bosilganda chiqadi */
-    }
-
-    .menu-toggle-btn {
-        display: flex !important; /* Faqat telefonda chiqadi */
-    }
-
-    .bottom-nav {
-        display: flex !important;
+    
+    .main-content {
+        margin-left: 260px !important; /* Sidebar o'rnini bo'sh qoldirish */
     }
 }
 
@@ -1594,3 +1588,90 @@ input:checked + .slider:before { transform: translateX(22px); }
         margin-left: 10px;
     }
 }
+
+.icon-wrapper {
+    cursor: pointer; /* Sichqoncha borganda qo'lcha chiqadi */
+    transition: 0.2s;
+}
+.icon-wrapper:hover {
+    opacity: 0.7;
+}
+
+.custom-modal {
+    display: none; /* Dastlab yashirin */
+    position: fixed;
+    z-index: 10006;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5); /* Orqa fonni xiralashtirish */
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 15px;
+    width: 80%;
+    max-width: 400px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.close-btn {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #999;
+}
+
+.modal-input {
+    width: 100%;
+    padding: 10px;
+    margin: 15px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.modal-submit-btn {
+    width: 100%;
+    padding: 10px;
+    background: #00b894;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* style.css uchun kichik qo'shimcha */
+.login-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    text-align: center;
+    max-width: 400px;
+    margin: 20px auto;
+}
+.login-input {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 12px;
+    border: 1.5px solid #eee;
+    border-radius: 10px;
+    outline: none;
+}
+.login-btn {
+    background: #00b894;
+    color: white;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+

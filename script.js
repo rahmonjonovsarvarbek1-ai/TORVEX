@@ -521,4 +521,24 @@ function toggleMenu() {
         console.error("Xato: .side-nav topilmadi!");
     }
 }
+function showSection(sectionId) {
+    // 1. Barcha bo'limlarni yashirish
+    const sections = ['dash', 'ustalar', 'bozor', 'news', 'profil', 'sozlamalar'];
+    sections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    });
 
+    // 2. Tanlangan bo'limni ko'rsatish
+    const activeSection = document.getElementById(sectionId);
+    if (activeSection) {
+        activeSection.style.display = 'block';
+    }
+
+    // 3. Mobil sidebar ochiq bo'lsa, uni avtomat yopish
+    const sidebar = document.querySelector('.sidebar');
+    if (sidebar) sidebar.classList.remove('active');
+
+    // 4. Pastki navigatsiyada aktiv holatni yangilash (ixtiyoriy)
+    console.log("Hozirgi bo'lim: " + sectionId);
+}
