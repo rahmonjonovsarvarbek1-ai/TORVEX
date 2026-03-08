@@ -2445,8 +2445,8 @@ input:checked + .slider:before { transform: translateX(22px); }
     /* 6. Profil sahifasidagi rasm va ma'lumotlarni telefon markaziga joylash */
     .profile-header {
         flex-direction: column;
-        text-align: center;
-        align-items: center;
+        text-align: left;
+        align-items: left;
     }
 
     .profile-image-large {
