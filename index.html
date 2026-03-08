@@ -7,14 +7,14 @@
     <title>XEBEC | Professional Master Platform - Created by [Sarvarbek Rahmonjonov]</title>
     
     <meta name="description" content="XEBEC - Professional ustalar va qurilish bozori platformasi. Eng yaxshi mutaxassislar va qurilish materiallari bir joyda. Loyiha muallifi: [ISMINGIZ].">
-    <meta name="keywords" content="XEBEC, usta topish, qurilish bozori, santexnik, elektrik, [ISMINGIZ], Uzbekistan masters">
+    <meta name="keywords" content="XEBEC, usta topish, qurilish bozori, santexnik, elektrik, [Sarvarbek Rahmonjonov], Uzbekistan masters">
     <meta name="author" content="[Sarvarbek Rahmonjonov]">
     <meta name="robots" content="index, follow">
     
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://xebec.uz/">
     <meta property="og:title" content="XEBEC | Professional Master Platform">
-    <meta property="og:description" content="Malakali ustalar va sifatli qurilish materiallari. Loyiha muallifi: [ISMINGIZ].">
+    <meta property="og:description" content="Malakali ustalar va sifatli qurilish materiallari. Loyiha muallifi: [Sarvarbek Rahmonjonov].">
     <meta property="og:image" content="https://xebec.uz/assets/og-image.jpg"> <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="XEBEC - Created by [ISMINGIZ]">
     <meta name="twitter:description" content="Eng yaxshi ustalar va qurilish mollari platformasi.">
@@ -68,6 +68,9 @@
                     </li>
                     <li onclick="showSection('news')" class="nav-item" id="li-news">
                         <i class="fas fa-newspaper"></i> <span>Yangiliklar</span>
+                    </li>
+                    <li onclick="showSection('muhokama')" class="nav-item" id="li-muhokama">
+                    <i class="fas fa-comments"></i> <span>Muhokama</span>
                     </li>
                 </ul>
 
@@ -125,20 +128,8 @@
                     <div class="status-pill"><span class="online-dot"></span> Online</div>
                     <div class="action-icons">
                        <div class="icon-wrapper" onclick="showSection('news')" style="cursor: pointer;">
-    <i class="far fa-bell"></i>
-    <span class="badge">3</span>
-</div>
-
-<div class="icon-wrapper" onclick="showSection('profil')" style="cursor: pointer;">
-    <i class="far fa-envelope"></i>
-</div>
-                    <div class="profile-pill" onclick="showSection('profil')">
-                        <img src="https://i.pravatar.cc/150?img=11" alt="User">
-                        <div class="profile-meta">
-                            <span class="user-name">Shaxs</span>
-                            <span class="user-status">Ma'lumotlari</span>
-                        </div>
-                    </div>
+                    <i class="far fa-bell"></i>
+                    <span class="badge">3</span>
                 </div>
             </header>
 
@@ -161,7 +152,7 @@
     </div>
 
     <div class="quick-actions-grid">
-        <div class="action-item">
+        <div class="action-item" onclick="openAddAdModal()">
             <div class="action-icon blue"><i class="fas fa-plus"></i></div>
             <span>E'lon berish</span>
         </div>
@@ -220,6 +211,42 @@
     </div>
     <div id="featuredMasters" class="grid-container">
         </div>
+</section>
+
+<section id="muhokama" class="content-section" style="display: none;">
+    <div class="muhokama-wrapper animate-fade-in">
+        <div class="muhokama-header-advanced">
+            <div class="header-info">
+                <h3><i class="fab fa-twitter"></i> Muhokama</h3>
+                <span class="online-count"><i class="fas fa-circle"></i> 124 kishi onlayn</span>
+            </div>
+            <button class="refresh-btn" onclick="renderGlobalTalks()"><i class="fas fa-sync-alt"></i></button>
+        </div>
+        
+        <div class="tweet-composer">
+            <div class="composer-top">
+                <img id="composerUserAvatar" src="https://www.w3schools.com/howto/img_avatar.png" class="user-mini-avatar" alt="User">
+                <textarea id="globalPostInput" placeholder="Nimalar bo'lyapti?" oninput="autoResize(this)"></textarea>
+            </div>
+            
+            <div id="imagePreviewContainer" class="preview-hidden"></div>
+
+            <div class="composer-actions">
+                <div class="media-tools">
+                    <label for="postImageInput" class="tool-icon">
+                        <i class="far fa-image"></i>
+                        <input type="file" id="postImageInput" hidden accept="image/*" onchange="handlePostImage(event)">
+                    </label>
+                    <button class="tool-icon"><i class="far fa-smile"></i></button>
+                    <button class="tool-icon"><i class="fas fa-hashtag"></i></button>
+                </div>
+                <button class="btn-post-main" onclick="addGlobalPost()">Post qilish</button>
+            </div>
+        </div>
+
+        <div id="globalFeed" class="feed-list-advanced">
+            </div>
+    </div>
 </section>
 
 <section id="bozor" class="content-section">
@@ -361,8 +388,8 @@
         <div class="profile-page-wrapper">
             <div class="profile-header">
                 <div class="cover-photo">
-                    <button class="btn-settings-mobile" onclick="toggleDrawer()">
-                       <i class="fas fa-cog"></i>
+                    <button class="btn-settings-premium" onclick="toggleDrawer()">
+                      <i class="fas fa-cog"></i>
                     </button>
                     <button class="edit-cover"><i class="fas fa-pen"></i></button>
                 </div>
@@ -412,7 +439,6 @@
     </div>
 
     <div class="info-row">
-        <div class="info-label"><i class="fab fa-telegram-plane"></i> Telegram:</div>
         <div class="info-value-wrapper">
             <strong id="displayTelegram">@sarvar</strong>
             <input type="text" id="editTelegram" class="edit-input" style="display:none;">
@@ -503,20 +529,22 @@
                 </div>
 
                 <div class="tab-content-wrapper" id="tabContent">
-                    <div class="animate-fade-in">
-                        <div class="content-header">
-                            <h3>Faol e'lonlaringiz</h3>
-                            <button class="btn-add-new"><i class="fas fa-plus-circle"></i> Yangi qo'shish</button>
-                        </div>
-                        <div class="empty-state-advanced">
-                            <div class="illustration-box">
-                                <i class="fas fa-folder-plus"></i>
-                            </div>
-                            <h4>Hozircha hech narsa yo'q</h4>
-                            <p>Siz hali biron bir xizmat yoki mahsulot bo'yicha e'lon bermadingiz.</p>
-                        </div>
-                    </div>
-                </div>
+                    <div id="ads-section" class="animate-fade-in">
+    <div class="content-header">
+        <h3>Mening e'lonlarim <span id="adsCount" class="count-pill">0</span></h3>
+        <button class="btn-add-new" onclick="openAddAdModal()">
+            <i class="fas fa-plus-circle"></i> Yangi qo'shish
+        </button>
+    </div>
+    
+    <div id="myAdsList" class="ads-grid">
+        <div class="empty-state-advanced">
+            <div class="illustration-box"><i class="fas fa-folder-plus"></i></div>
+            <h4>Hozircha e'lonlar yo'q</h4>
+            <p>Xizmatlaringizni taklif qilish uchun birinchi e'loningizni joylashtiring.</p>
+        </div>
+    </div>
+</div>
             </div>
             </div>
     </div>
@@ -703,9 +731,13 @@
 </div>
 
 <div class="bottom-nav">
-    <a href="#" onclick="showSection('dash')" class="nav-item-mobile">
+    <a href="#" onclick="showSection('dash')" class="nav-item-mobile active">
         <i class="fas fa-th-large"></i>
         <span>Asosiy</span>
+    </a>
+    <a href="#" onclick="showSection('muhokama')" class="nav-item-mobile">
+        <i class="fas fa-comments"></i>
+        <span>Muhokama</span>
     </a>
     <a href="#" onclick="showSection('ustalar')" class="nav-item-mobile">
         <i class="fas fa-tools"></i>
@@ -813,6 +845,31 @@ function toggleSidebar() {
 </div>
 
 <div id="drawerOverlay" class="drawer-overlay" onclick="toggleDrawer()"></div>
+
+
+<div id="adModal" class="modal-overlay">
+    <div class="modal-content animate-zoom-in">
+        <div class="modal-header">
+            <h3><i class="fas fa-plus-circle"></i> Yangi e'lon</h3>
+            <button class="close-modal" onclick="closeAdModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="upload-zone" onclick="document.getElementById('adImage').click()">
+                <i class="fas fa-camera"></i>
+                <span>Rasm yuklash</span>
+                <input type="file" id="adImage" hidden accept="image/*" onchange="previewAdImage(event)">
+                <img id="adPreview" src="" style="display:none; width:100%; border-radius:10px;">
+            </div>
+            
+            <input type="text" id="adTitle" placeholder="E'lon sarlavhasi (masalan: Santexnik xizmati)">
+            <textarea id="adDesc" placeholder="Batafsil ma'lumot..."></textarea>
+            <input type="number" id="adPrice" placeholder="Narxi (so'mda)">
+            
+            <button class="btn-submit-ad" onclick="submitNewAd()">E'lonni joylash</button>
+        </div>
+    </div>
+</div>
+
 
     <script src="script.js"></script>
 </body>

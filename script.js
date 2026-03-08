@@ -224,6 +224,49 @@ document.getElementById('avatarInput').addEventListener('change', function(e) {
     }
 });
 
+// 1. Sahifa yuklanganda saqlangan rasmni barcha joyga qaytarish
+window.addEventListener('DOMContentLoaded', () => {
+    const savedAvatar = localStorage.getItem('user_avatar'); // Skrinshotingizdagi kalit bilan bir xil qildik
+    if (savedAvatar) {
+        updateAvatarElements(savedAvatar);
+    }
+});
+
+// 2. Rasmni barcha joyda (profil va pill) yangilash
+function updateAvatarElements(src) {
+    const mainImg = document.getElementById('userAvatar'); // Profil sahifasidagi katta rasm
+    const pillImg = document.querySelector('.profile-pill img'); // Tepada turadigan kichik rasm
+    const postEditorAvatar = document.querySelector('.muhokama-input-section .user-avatar'); // "Nimalar bo'lyapti" yonidagi rasm
+
+    if (mainImg) mainImg.src = src;
+    if (pillImg) pillImg.src = src;
+    if (postEditorAvatar) postEditorAvatar.src = src;
+}
+
+// 3. Postlarni tahrirlash funksiyasi
+function editPost(postId) {
+    let posts = JSON.parse(localStorage.getItem('Xebec_Global_Feed')) || [];
+    const post = posts.find(p => p.id === postId);
+    if (post) {
+        const newText = prompt("Xabarni tahrirlang:", post.text);
+        if (newText !== null && newText.trim() !== "") {
+            post.text = newText;
+            localStorage.setItem('Xebec_Global_Feed', JSON.stringify(posts));
+            renderGlobalTalks();
+        }
+    }
+}
+
+// 4. Postni o'chirish funksiyasi
+function deletePost(postId) {
+    if (confirm("Ushbu xabarni o'chirishni xohlaysizmi?")) {
+        let posts = JSON.parse(localStorage.getItem('Xebec_Global_Feed')) || [];
+        posts = posts.filter(p => p.id !== postId);
+        localStorage.setItem('Xebec_Global_Feed', JSON.stringify(posts));
+        renderGlobalTalks();
+    }
+}
+
 // 4. Tablarni almashtirish
 function switchTab(element, tabName) {
     document.querySelectorAll('.tab-item').forEach(btn => btn.classList.remove('active'));
@@ -707,5 +750,531 @@ function toggleDrawer() {
         overlay.style.display = 'block';
     } else {
         overlay.style.display = 'none';
+    }
+}
+
+function switchTab(element, tabName) {
+    // 1. Aktiv klassni tugmalardan olib tashlash va bosilganiga qo'shish
+    document.querySelectorAll('.tab-item').forEach(tab => tab.classList.remove('active'));
+    element.classList.add('active');
+
+    const contentWrapper = document.getElementById('tabContent');
+    
+    // 2. Tab ismiga qarab kontentni generatsiya qilish
+    let html = '';
+
+    if (tabName === 'ads') {
+        html = `
+            <div class="animate-fade-in">
+                <div class="content-header">
+                    <h3>Faol e'lonlaringiz</h3>
+                    <button class="btn-add-new"><i class="fas fa-plus-circle"></i> Yangi qo'shish</button>
+                </div>
+                <div class="empty-state-advanced">
+                    <div class="illustration-box"><i class="fas fa-folder-plus"></i></div>
+                    <h4>Hozircha hech narsa yo'q</h4>
+                    <p>Siz hali biron bir xizmat yoki mahsulot bo'yicha e'lon bermadingiz.</p>
+                </div>
+            </div>`;
+    } else if (tabName === 'reviews') {
+        html = `
+            <div class="animate-fade-in">
+                <div class="content-header">
+                    <h3>Mijozlar sharhlari</h3>
+                </div>
+                <div class="reviews-list">
+                    <div class="review-item">
+                        <div class="review-user"><strong>Ali Valiyev</strong> <span>⭐⭐⭐⭐⭐</span></div>
+                        <p>"Juda tez va sifatli xizmat ko'rsatishdi, tavsiya qilaman!"</p>
+                        <small>2 kun avval</small>
+                    </div>
+                </div>
+            </div>`;
+    } else if (tabName === 'security') {
+        html = `
+            <div class="animate-fade-in">
+                <div class="content-header">
+                    <h3>Xavfsizlik sozlamalari</h3>
+                </div>
+                <div class="security-form">
+                    <div class="input-group">
+                        <label>Joriy parol</label>
+                        <input type="password" id="currentPass" placeholder="********">
+                    </div>
+                    <div class="input-group">
+                        <label>Yangi parol</label>
+                        <input type="password" id="newPass" placeholder="Yangi parol">
+                    </div>
+                    <button class="btn-save-security" onclick="updatePassword()">Parolni yangilash</button>
+                </div>
+            </div>`;
+    }
+
+    contentWrapper.innerHTML = html;
+}
+
+// E'lonlarni yuklash funksiyasi
+function renderMyAds() {
+    const adsList = document.getElementById('myAdsList');
+    const badge = document.querySelector('.tab-badge'); // Tepadagi raqam
+    
+    // LocalStorage'dan XEBEC e'lonlarini olish
+    const myAds = JSON.parse(localStorage.getItem('Xebec_Ads')) || [];
+    
+    // Tabdagi raqamni yangilash
+    if(badge) badge.innerText = myAds.length;
+    if(document.getElementById('adsCount')) document.getElementById('adsCount').innerText = myAds.length;
+
+    if (myAds.length === 0) {
+        adsList.innerHTML = `
+            <div class="empty-state-advanced">
+                <div class="illustration-box"><i class="fas fa-folder-plus"></i></div>
+                <h4>Hozircha e'lonlar yo'q</h4>
+                <p>Yangi e'lon qo'shish tugmasini bosing.</p>
+            </div>`;
+        return;
+    }
+
+    adsList.innerHTML = myAds.map((ad, index) => `
+        <div class="ad-card animate-slide-up">
+            <span class="ad-status">Aktiv</span>
+            <h4>${ad.title}</h4>
+            <p>${ad.category}</p>
+            <div class="ad-actions">
+                <button class="btn-delete-ad" onclick="deleteAd(${index})">
+                    <i class="fas fa-trash"></i> O'chirish
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+
+// E'lonni o'chirish
+function deleteAd(index) {
+    if(confirm("Ushbu e'lonni o'chirishni xohlaysizmi?")) {
+        let myAds = JSON.parse(localStorage.getItem('Xebec_Ads')) || [];
+        myAds.splice(index, 1);
+        localStorage.setItem('Xebec_Ads', JSON.stringify(myAds));
+        renderMyAds();
+    }
+}
+
+function addGlobalPost() {
+    const input = document.getElementById('globalPostInput');
+    const text = input.value.trim();
+    
+    if(!text) return;
+
+    const newPost = {
+        id: Date.now(),
+        userName: "Sarvarbek", // Profilingizdagi ism
+        handle: "@sarvar",
+        text: text,
+        time: "Hozir"
+    };
+
+    let posts = JSON.parse(localStorage.getItem('Xebec_Global_Talks')) || [];
+    posts.unshift(newPost);
+    localStorage.setItem('Xebec_Global_Talks', JSON.stringify(posts));
+
+    input.value = '';
+    renderGlobalTalks();
+}
+
+function renderGlobalTalks() {
+    const feed = document.getElementById('globalFeed');
+    const posts = JSON.parse(localStorage.getItem('Xebec_Global_Feed')) || [];
+    
+    // Hozirgi saqlangan profil rasmini olamiz
+    const currentAvatar = localStorage.getItem('user_avatar');
+
+    feed.innerHTML = posts.map(post => {
+        // Agar post sizniki bo'lsa (@sarvar), har doim oxirgi saqlangan rasmni ko'rsatamiz
+        // Agar rasm bo'lmasa, ko'k doira va harf chiqadi
+        let avatarHTML;
+        
+        if (post.handle === "@sarvar" && currentAvatar) {
+            avatarHTML = `<img src="${currentAvatar}" class="user-mini-avatar">`;
+        } else if (post.avatar) {
+            avatarHTML = `<img src="${post.avatar}" class="user-mini-avatar">`;
+        } else {
+            avatarHTML = `<div class="user-initial-avatar">${post.user[0]}</div>`;
+        }
+
+        return `
+        <div class="feed-card animate-slide-up">
+            ${avatarHTML}
+            <div class="post-main">
+                <div class="post-header">
+                    <div class="header-info">
+                        <strong>${post.user}</strong> <i class="fas fa-check-circle verified"></i>
+                        <span class="post-handle">${post.handle} · ${post.time}</span>
+                    </div>
+                    <div class="post-options">
+                        <i class="fas fa-edit" onclick="editPost(${post.id})"></i>
+                        <i class="fas fa-trash" onclick="deletePost(${post.id})"></i>
+                    </div>
+                </div>
+                <div class="post-text">${post.text}</div>
+                ${post.image ? `<img src="${post.image}" class="post-content-img">` : ''}
+                <div class="post-footer">
+                    <div class="action-unit"><i class="far fa-comment"></i> 0</div>
+                    <div class="action-unit"><i class="far fa-heart"></i> 0</div>
+                    <div class="action-unit"><i class="far fa-share-square"></i></div>
+                </div>
+            </div>
+        </div>
+    `;
+    }).join('');
+}
+
+function showSection(sectionId) {
+    // Bo'limlarni ko'rsatish mantiqi...
+    document.querySelectorAll('.content-section').forEach(s => s.style.display = 'none');
+    document.getElementById(sectionId).style.display = 'block';
+
+    // NAVIGATSIYADAGI AKTIVLIKNI YANGILASH
+    document.querySelectorAll('.nav-item-mobile').forEach(item => {
+        item.classList.remove('active');
+    });
+    
+    // Bosilgan elementga active klassini qo'shish
+    event.currentTarget.classList.add('active');
+
+    if(sectionId === 'muhokama') renderTalks();
+}
+
+let currentPostImage = null;
+
+// Rasm tanlanganda preview ko'rsatish
+function handlePostImage(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            currentPostImage = e.target.result;
+            const container = document.getElementById('imagePreviewContainer');
+            container.innerHTML = `<img src="${currentPostImage}" class="post-preview-img">
+                                   <button onclick="removePostImage()" class="remove-img">&times;</button>`;
+            container.className = 'preview-visible';
+        }
+        reader.readAsDataURL(file);
+    }
+}
+
+function removePostImage() {
+    currentPostImage = null;
+    document.getElementById('imagePreviewContainer').className = 'preview-hidden';
+}
+
+// Post qo'shish
+function addGlobalPost() {
+    const input = document.getElementById('globalPostInput');
+    if (!input.value.trim() && !currentPostImage) return;
+
+    const newPost = {
+        id: Date.now(),
+        user: "Admin User", // Bu yerga profil ma'lumotlarini ulasangiz bo'ladi
+        handle: "@admin",
+        text: input.value,
+        image: currentPostImage,
+        time: "Hozir",
+        likes: 0,
+        replies: 0
+    };
+
+    let posts = JSON.parse(localStorage.getItem('Xebec_Global_Feed')) || [];
+    posts.unshift(newPost);
+    localStorage.setItem('Xebec_Global_Feed', JSON.stringify(posts));
+
+    // Tozalash
+    input.value = '';
+    removePostImage();
+    renderGlobalTalks();
+}
+
+// Sahifa yuklanganda va bo'limga o'tganda postlarni ko'rsatish
+window.onload = function() {
+    // Agar foydalanuvchi profili mavjud bo'lsa, ma'lumotlarni yuklaymiz
+    renderGlobalTalks();
+};
+
+function addGlobalPost() {
+    const input = document.getElementById('globalPostInput');
+    if (!input.value.trim() && !currentPostImage) return;
+
+    // To'g'ri kalitdan rasmni olamiz
+    const savedAvatar = localStorage.getItem('user_avatar');
+
+    const newPost = {
+        id: Date.now(),
+        user: "Sarvarbek Rahmonjonov",
+        handle: "@sarvar",
+        avatar: savedAvatar, // null bo'lishi ham mumkin
+        text: input.value,
+        image: currentPostImage,
+        time: new Date().getHours() + ":" + new Date().getMinutes().toString().padStart(2, '0'),
+        likes: 0
+    };
+
+    let posts = JSON.parse(localStorage.getItem('Xebec_Global_Feed')) || [];
+    posts.unshift(newPost);
+    localStorage.setItem('Xebec_Global_Feed', JSON.stringify(posts));
+
+    input.value = '';
+    renderGlobalTalks();
+}
+
+function addGlobalPost() {
+    const input = document.getElementById('globalPostInput');
+    if (!input.value.trim() && !currentPostImage) return;
+
+    // Profil rasmini olish (agar src'da haqiqiy rasm bo'lsa)
+    const profileImg = document.querySelector('.profile-image-large');
+    const hasImage = profileImg && profileImg.src && !profileImg.src.includes('default-avatar'); 
+    const realAvatar = hasImage ? profileImg.src : null;
+
+    const newPost = {
+        id: Date.now(),
+        user: "Sarvarbek Rahmonjonov",
+        handle: "@sarvar",
+        avatar: realAvatar, // Rasm yo'q bo'lsa null bo'ladi
+        text: input.value,
+        image: currentPostImage,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        likes: 0
+    };
+
+    let posts = JSON.parse(localStorage.getItem('Xebec_Global_Feed')) || [];
+    posts.unshift(newPost);
+    localStorage.setItem('Xebec_Global_Feed', JSON.stringify(posts));
+
+    input.value = '';
+    removePostImage();
+    renderGlobalTalks();
+}
+
+
+function showSection(sectionId) {
+    // Barcha sectionlarni yashirish
+    document.querySelectorAll('.content-section').forEach(s => s.style.display = 'none');
+    
+    // Tanlangan sectionni ko'rsatish
+    document.getElementById(sectionId).style.display = 'block';
+
+    // AGAR MUHOKAMA BO'LIMI BO'LSA - POSTLARNI YUKLASH
+    if(sectionId === 'muhokama') {
+        renderGlobalTalks();
+    }
+}
+
+function renderGlobalTalks() {
+    const feed = document.getElementById('globalFeed');
+    if (!feed) return; // Element topilmasa funksiyani to'xtatish
+
+    const posts = JSON.parse(localStorage.getItem('Xebec_Global_Feed')) || [];
+    
+    // Profil rasmini ikkala ehtimoliy kalit bo'yicha tekshiramiz
+    const currentAvatar = localStorage.getItem('user_avatar') || localStorage.getItem('userAvatar');
+
+    feed.innerHTML = posts.map(post => {
+        // Avatar mantiqi
+        let avatarHTML;
+        if (post.handle === "@sarvar" && currentAvatar) {
+            avatarHTML = `<img src="${currentAvatar}" class="user-mini-avatar">`;
+        } else if (post.avatar) {
+            avatarHTML = `<img src="${post.avatar}" class="user-mini-avatar">`;
+        } else {
+            avatarHTML = `<div class="user-initial-avatar">${post.user ? post.user[0] : 'U'}</div>`;
+        }
+
+        // Har bir post uchun HTML qaytarish
+        return `
+        <div class="feed-card animate-slide-up">
+            ${avatarHTML}
+            <div class="post-main">
+                <div class="post-header">
+                    <div class="header-info">
+                        <strong>${post.user || 'Foydalanuvchi'}</strong> <i class="fas fa-check-circle verified"></i>
+                        <span class="post-handle">${post.handle || '@user'} · ${post.time || 'Hozir'}</span>
+                    </div>
+                    <div class="post-options">
+                        <i class="fas fa-edit" onclick="editPost(${post.id})"></i>
+                        <i class="fas fa-trash" onclick="deletePost(${post.id})"></i>
+                    </div>
+                </div>
+                <div class="post-text">${post.text}</div>
+                
+                <div class="post-footer">
+                    <div class="action-unit" onclick="addComment(${post.id})">
+                        <i class="far fa-comment"></i> 
+                        <span>${post.comments ? post.comments.length : 0}</span>
+                    </div>
+                    
+                    <div class="action-unit ${post.isLiked ? 'active-like' : ''}" onclick="toggleLike(${post.id})">
+                        <i class="${post.isLiked ? 'fas' : 'far'} fa-heart"></i> 
+                        <span>${post.likes || 0}</span>
+                    </div>
+                    
+                    <div class="action-unit" onclick="sharePost(${post.id})">
+                        <i class="far fa-share-square"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+    }).join('');
+}
+
+// Profilni ko'rish funksiyasi
+function viewUserProfile(userId) {
+    console.log("Foydalanuvchi profili ochilmoqda:", userId);
+    showSection('profil'); // Hozircha o'zingizni profilingizga yo'naltiradi
+    // Keyinchalik bu yerga boshqa foydalanuvchi ma'lumotlarini yuklash kodini yozasiz
+}
+
+// Profil rasmini o'zgartirish uchun (masalan, fayl tanlanganda)
+function updateProfileImage(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const newSrc = e.target.result;
+            // Ham profil sahifasidagi, ham yuqoridagi kichik rasmni yangilaymiz
+            document.querySelector('.profile-image-large').src = newSrc;
+            document.querySelector('.profile-pill img').src = newSrc;
+            
+            // Keyingi safar post yozganda yangi rasm chiqishi uchun saqlab qo'yamiz
+            localStorage.setItem('userAvatar', newSrc);
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+// Postni o'chirish
+function deletePost(postId) {
+    if(confirm("Ushbu xabarni o'chirishni xohlaysizmi?")) {
+        let posts = JSON.parse(localStorage.getItem('Xebec_Global_Feed')) || [];
+        posts = posts.filter(p => p.id !== postId);
+        localStorage.setItem('Xebec_Global_Feed', JSON.stringify(posts));
+        renderGlobalTalks();
+    }
+}
+
+// Postni tahrirlash
+function editPost(postId) {
+    let posts = JSON.parse(localStorage.getItem('Xebec_Global_Feed')) || [];
+    const post = posts.find(p => p.id === postId);
+    const newText = prompt("Xabarni tahrirlang:", post.text);
+    
+    if(newText !== null) {
+        post.text = newText;
+        localStorage.setItem('Xebec_Global_Feed', JSON.stringify(posts));
+        renderGlobalTalks();
+    }
+}
+
+// 1. Sahifa yuklanganda barcha rasmlarni yangilash
+window.addEventListener('DOMContentLoaded', () => {
+    const savedAvatar = localStorage.getItem('user_avatar') || localStorage.getItem('userAvatar');
+    if (savedAvatar) {
+        // Hamma joydagi rasmlarni bir marta yangilab chiqamiz
+        const targets = [
+            '.profile-image-large', 
+            '.profile-pill img', 
+            '#composerUserAvatar', 
+            '#userAvatar'
+        ];
+        targets.forEach(selector => {
+            const el = document.querySelector(selector) || document.getElementById(selector.replace('#',''));
+            if (el) el.src = savedAvatar;
+        });
+    }
+});
+
+// 2. Tahrirlash funksiyasini 1144-qatordan keyin qo'shing
+function editPost(postId) {
+    let posts = JSON.parse(localStorage.getItem('Xebec_Global_Feed')) || [];
+    const postIndex = posts.findIndex(p => p.id === postId);
+    
+    if (postIndex !== -1) {
+        const newText = prompt("Xabarni tahrirlang:", posts[postIndex].text);
+        if (newText !== null && newText.trim() !== "") {
+            posts[postIndex].text = newText;
+            localStorage.setItem('Xebec_Global_Feed', JSON.stringify(posts));
+            renderGlobalTalks(); // Ekranni yangilash
+        }
+    }
+}
+
+// 1. Like bosish funksiyasi
+function toggleLike(postId) {
+    let posts = JSON.parse(localStorage.getItem('Xebec_Global_Feed')) || [];
+    const post = posts.find(p => p.id === postId);
+    
+    if (post) {
+        // Agar like bosilmagan bo'lsa 1 qo'shadi, bosilgan bo'lsa ayiradi
+        if (!post.isLiked) {
+            post.likes = (post.likes || 0) + 1;
+            post.isLiked = true;
+        } else {
+            post.likes -= 1;
+            post.isLiked = false;
+        }
+        localStorage.setItem('Xebec_Global_Feed', JSON.stringify(posts));
+        renderGlobalTalks(); // UI ni yangilash
+    }
+}
+
+// 2. Comment yozish (oddiy variant)
+function addComment(postId) {
+    const commentText = prompt("Fikringizni qoldiring:");
+    if (commentText) {
+        let posts = JSON.parse(localStorage.getItem('Xebec_Global_Feed')) || [];
+        const post = posts.find(p => p.id === postId);
+        if (post) {
+            if (!post.comments) post.comments = [];
+            post.comments.push(commentText);
+            localStorage.setItem('Xebec_Global_Feed', JSON.stringify(posts));
+            alert("Fikr muvaffaqiyatli qo'shildi!");
+            renderGlobalTalks();
+        }
+    }
+}
+
+// 3. Share (Havolani nusxalash)
+function sharePost(postId) {
+    const dummyUrl = `https://xebec.uz/post/${postId}`;
+    navigator.clipboard.writeText(dummyUrl).then(() => {
+        alert("Post havolasi nusxalandi!");
+    });
+}
+
+function toggleLike(postId) {
+    let posts = JSON.parse(localStorage.getItem('Xebec_Global_Feed')) || [];
+    const post = posts.find(p => p.id === postId);
+    if (post) {
+        post.isLiked = !post.isLiked;
+        post.likes = post.isLiked ? (post.likes || 0) + 1 : (post.likes || 1) - 1;
+        localStorage.setItem('Xebec_Global_Feed', JSON.stringify(posts));
+        renderGlobalTalks();
+    }
+}
+
+function sharePost(postId) {
+    alert("Post havolasi nusxalandi!");
+}
+
+function addComment(postId) {
+    const comment = prompt("Fikringizni yozing:");
+    if (comment) {
+        let posts = JSON.parse(localStorage.getItem('Xebec_Global_Feed')) || [];
+        const post = posts.find(p => p.id === postId);
+        if (post) {
+            if (!post.comments) post.comments = [];
+            post.comments.push(comment);
+            localStorage.setItem('Xebec_Global_Feed', JSON.stringify(posts));
+            renderGlobalTalks();
+        }
     }
 }
