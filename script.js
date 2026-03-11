@@ -1766,3 +1766,22 @@ function openPrivateChat(id, name, img) {
         </div>
     `;
 }
+
+import { auth, googleProvider } from "./firebase-config.js";
+import { signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { saveUserToDB } from "./database.js";
+
+const googleBtn = document.getElementById('google-btn');
+
+if (googleBtn) {
+    googleBtn.addEventListener('click', async () => {
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
+            // Foydalanuvchi kirgan zahoti bazaga yozamiz
+            await saveUserToDB(result.user);
+            window.location.href = "home.html"; // Muvaffaqiyatli bo'lsa bosh sahifaga
+        } catch (error) {
+            console.error("Login xatosi:", error.message);
+        }
+    });
+}

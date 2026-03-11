@@ -19,3 +19,23 @@ function searchMessages(query) {
         </div>
     `).join('');
 }
+
+import { db } from "./firebase-config.js";
+import { doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+// Foydalanuvchini bazaga saqlash mantiqi
+export const saveUserToDB = async (user) => {
+    try {
+        const userRef = doc(db, "users", user.uid);
+        await setDoc(userRef, {
+            name: user.displayName,
+            email: user.email,
+            photo: user.photoURL,
+            role: "client", // Standart rol
+            lastSeen: serverTimestamp()
+        }, { merge: true });
+        console.log("Ma'lumotlar Firestore'ga saqlandi!");
+    } catch (error) {
+        console.error("Xatolik yuz berdi:", error);
+    }
+};
