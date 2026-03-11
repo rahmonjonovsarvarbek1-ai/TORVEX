@@ -868,23 +868,6 @@ function toggleEdit(field) {
     inputElement.focus();
 }
 
-// Tahrirlash rejimini yoqish/o'chirish
-function toggleEdit(field) {
-    const displayElement = document.getElementById(`display${field}`);
-    const inputElement = document.getElementById(`edit${field}`);
-    const saveBtn = document.getElementById(`save${field}`);
-    
-    if (!displayElement || !inputElement || !saveBtn) return; // Element topilmasa to'xtatish
-
-    // Matnni inputga o'tkazish
-    inputElement.value = displayElement.innerText;
-    
-    // Elementlarni ko'rsatish/yashirish
-    displayElement.style.display = 'none';
-    inputElement.style.display = 'inline-block';
-    saveBtn.style.display = 'inline-block';
-    inputElement.focus();
-}
 
 // Ma'lumotni saqlash
 function saveField(field) {
