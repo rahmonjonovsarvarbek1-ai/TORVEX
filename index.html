@@ -86,7 +86,7 @@
         </div>
     </nav>
 </aside>
-        <main class="main-content">
+       <main class="main-content">
     <header class="top-bar">
         <div class="search-wrapper">
             <i class="fas fa-search"></i>
@@ -104,7 +104,7 @@
         </div>
     </header>
 
-    <section id="home" class="section">
+    <section id="dash" class="section">
         <div class="banner-area">
             <div class="banner-overlay"></div>
             <div class="banner-content">
@@ -176,8 +176,7 @@
             <h2 class="sub-title">Top reytingli mutaxassislar</h2>
             <a href="#" class="view-all" onclick="showSection('ustalar')">Barchasini ko'rish <i class="fas fa-chevron-right"></i></a>
         </div>
-        <div id="featuredMasters" class="grid-container">
-            </div>
+        <div id="featuredMasters" class="grid-container"></div>
     </section>
 
     <section id="muhokama" class="section" style="display: none;">
@@ -209,7 +208,6 @@
                         <p>Suhbatni boshlash uchun kontaktni tanlang</p>
                     </div>
                 </div>
-
                 <div id="activeChat" class="active-chat-container" style="display: none;">
                     <div class="active-chat-header">
                         <div class="chat-user-meta">
@@ -220,14 +218,8 @@
                                 <span class="status-text">onlayn</span>
                             </div>
                         </div>
-                        <div class="header-actions">
-                            <button class="action-btn"><i class="fas fa-phone"></i></button>
-                            <button class="action-btn" onclick="toggleChatDropdown()"><i class="fas fa-ellipsis-v"></i></button>
-                        </div>
                     </div>
-
                     <div id="messageDisplay" class="message-area-x"></div>
-
                     <div class="chat-input-area-x">
                         <div class="x-actions-bar">
                             <button class="x-icon-btn"><i class="far fa-image"></i></button>
@@ -254,134 +246,74 @@
                 <span id="cartCount">0</span>
             </div>
         </div>
-        </section>
+        <div id="marketGrid" class="market-grid-container"></div>
+    </section>
 
     <section id="profil" class="section" style="display: none;">
         <div id="auth-gate" class="auth-wrapper">
             <div class="auth-card">
                 <h2>Kirish</h2>
+                <button class="btn-google" onclick="loginWithGoogle()">Google orqali kirish</button>
+            </div>
+        </div>
+        <div id="real-profile-content" style="display: none;"></div>
+    </section>
+
+    <section id="ustalar" class="section" style="display: none;">
+        <div class="masters-page-header">
+            <div class="header-main">
+                <h2>Mutaxassislar katalogi</h2>
+                <p>O'z ishining ustalarini tajribasi va reytingi bo'yicha toping</p>
+            </div>
+            <div class="search-sort-bar">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="masterSearch" placeholder="Ism yoki mutaxassislik bo'yicha qidirish..." onkeyup="searchMasters()">
                 </div>
-   
-   
+                <select class="sort-select" onchange="sortMasters(this.value)">
+                    <option value="rating">Reyting bo'yicha</option>
+                    <option value="exp">Tajriba bo'yicha</option>
+                    <option value="price">Narx (arzonroq)</option>
+                </select>
             </div>
-        
-        <div id="real-profile-content" style="display: none;">
+        </div>
+        <div class="filter-container">
+            <div class="filter-chips">
+                <button class="chip active" onclick="filterByJob('all')">Barchasi</button>
+                <button class="chip" onclick="filterByJob('Elektrik')"><i class="fas fa-bolt"></i> Elektrik</button>
+                <button class="chip" onclick="filterByJob('Santexnik')"><i class="fas fa-faucet"></i> Santexnik</button>
+                <button class="chip" onclick="filterByJob('Malyar')"><i class="fas fa-paint-roller"></i> Malyar</button>
+                <button class="chip" onclick="filterByJob('Kafelchi')"><i class="fas fa-th"></i> Kafelchi</button>
             </div>
+            <span class="results-count">Jami: <b id="totalMasters">0</b> ta mutaxassis</span>
+        </div>
+        <div id="mastersGrid" class="grid-container-advanced"></div>
+    </section>
+
+    <section id="sozlamalar" class="section" style="display: none;">
+        <div class="settings-container">
+            <div class="settings-header">
+                <h2>Tizim Sozlamalari</h2>
+                <p>Platformadan foydalanishni o'zingizga moslashtiring</p>
+            </div>
+            <div class="settings-grid">
+                <div class="settings-card">
+                    <div class="card-icon"><i class="fas fa-paint-brush"></i></div>
+                    <div class="card-body">
+                        <h4>Interfeys va Dizayn</h4>
+                        <div class="setting-item">
+                            <span>Tungi rejim (Dark Mode)</span>
+                            <label class="switch">
+                                <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                </div>
+        </div>
     </section>
 </main>
-
-
-<section id="sozlamalar" class="content-section">
-    <div class="settings-container">
-        <div class="settings-header">
-            <h2>Tizim Sozlamalari</h2>
-            <p>Platformadan foydalanishni o'zingizga moslashtiring</p>
-        </div>
-
-        <div class="settings-grid">
-            <div class="settings-card">
-                <div class="card-icon"><i class="fas fa-paint-brush"></i></div>
-                <div class="card-body">
-                    <h4>Interfeys va Dizayn</h4>
-                    <div class="setting-item">
-                        <div class="item-info">
-                            <span>Tungi rejim (Dark Mode)</span>
-                            <p>Ko'zingizni asrash uchun to'q rangli mavzuni yoqing</p>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-                    <div class="setting-item">
-                        <div class="item-info">
-                            <span>Asosiy rang</span>
-                            <p>Brend rangini tanlang</p>
-                        </div>
-                        <div class="color-picker">
-                            <span class="color-dot blue active"></span>
-                            <span class="color-dot purple"></span>
-                            <span class="color-dot orange"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="settings-card">
-                <div class="card-icon"><i class="fas fa-bell"></i></div>
-                <div class="card-body">
-                    <h4>Bildirishnomalar</h4>
-                    <div class="setting-item">
-                        <span>Email xabarnomalar</span>
-                        <input type="checkbox" checked>
-                    </div>
-                    <div class="setting-item">
-                        <span>SMS tasdiqlash</span>
-                        <input type="checkbox">
-                    </div>
-                    <div class="setting-item">
-                        <span>Yangi buyurtmalar haqida xabar</span>
-                        <input type="checkbox" checked>
-                    </div>
-                </div>
-            </div>
-
-            <div class="settings-card danger-zone">
-                <div class="card-icon"><i class="fas fa-user-shield"></i></div>
-                <div class="card-body">
-                    <h4>Hisob Xavfsizligi</h4>
-                    <div class="setting-item">
-                        <button class="btn-outline-settings">Parolni o'zgartirish</button>
-                    </div>
-                    <div class="setting-item">
-                        <div class="item-info">
-                            <span class="text-danger">Hisobni o'chirish</span>
-                            <p>Barcha ma'lumotlaringiz butunlay o'chib ketadi</p>
-                        </div>
-                        <button class="btn-danger-sm">O'chirish</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-            <section id="ustalar" class="content-section">
-    <div class="masters-page-header">
-        <div class="header-main">
-            <h2>Mutaxassislar katalogi</h2>
-            <p>O'z ishining ustalarini tajribasi va reytingi bo'yicha toping</p>
-        </div>
-        
-        <div class="search-sort-bar">
-            <div class="search-input-wrapper">
-                <i class="fas fa-search"></i>
-                <input type="text" id="masterSearch" placeholder="Ism yoki mutaxassislik bo'yicha qidirish..." onkeyup="searchMasters()">
-            </div>
-            <select class="sort-select" onchange="sortMasters(this.value)">
-                <option value="rating">Reyting bo'yicha</option>
-                <option value="exp">Tajriba bo'yicha</option>
-                <option value="price">Narx (arzonroq)</option>
-            </select>
-        </div>
-    </div>
-
-    <div class="filter-container">
-        <div class="filter-chips">
-            <button class="chip active" onclick="filterByJob('all')">Barchasi</button>
-            <button class="chip" onclick="filterByJob('Elektrik')"><i class="fas fa-bolt"></i> Elektrik</button>
-            <button class="chip" onclick="filterByJob('Santexnik')"><i class="fas fa-faucet"></i> Santexnik</button>
-            <button class="chip" onclick="filterByJob('Malyar')"><i class="fas fa-paint-roller"></i> Malyar</button>
-            <button class="chip" onclick="filterByJob('Kafelchi')"><i class="fas fa-th"></i> Kafelchi</button>
-        </div>
-        <span class="results-count">Jami: <b id="totalMasters">0</b> ta mutaxassis</span>
-    </div>
-
-    <div id="mastersGrid" class="grid-container-advanced">
-        </div>
-</section>
-
-        </main>
-    </div>
 
     <div class="fab-main" onclick="openQuickAction()" title="Tezkor amal">
         <i class="fas fa-plus"></i>
