@@ -1,38 +1,27 @@
-/**
- * XEBIC - Professional Dashboard Logic
- * GitHub: @sizning_profilingiz
- */
-// script.js ning eng tepasiga qo'ying
-const contentWrapper = document.getElementById('tabContent');
 
-// 1. MA'LUMOTLAR BAZASI (Simulyatsiya)
-const db = {
-    masters: [
-        { id: 1, name: "Ali Valiyev", job: "Santexnik", rating: 4.9, experience: 8, price: "150k", img: "https://i.pravatar.cc/150?u=1", status: "online" },
-        { id: 2, name: "Sardor Azimov", job: "Elektrik", rating: 4.8, experience: 5, price: "120k", img: "https://i.pravatar.cc/150?u=2", status: "offline" },
-        { id: 3, name: "Doston Akromov", job: "Kafelchi", rating: 4.7, experience: 10, price: "90k", img: "https://i.pravatar.cc/150?u=3", status: "online" },
-        { id: 4, name: "Javohir Karimov", job: "Elektrik", rating: 5.0, experience: 12, price: "200k", img: "https://i.pravatar.cc/150?u=4", status: "online" }
-    ],
-    news: [
-        { id: 1, title: "Sement narxi pasaydi", date: "Bugun, 10:30", category: "Bozor", text: "Qurilish materiallari bozorida sement 5% arzonlashdi...", img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400" },
-        { id: 2, title: "Yangi uylar uchun dizayn", date: "Kecha, 18:45", category: "Dizayn", text: "2024-yilda trendda bo'lgan loft uslubidagi interyerlar...", img: "https://images.unsplash.com/photo-1556912177-c54857056a2a?w=400" }
-    ]
+// Google Login funksiyasini global qilish
+window.loginWithGoogle = function() {
+    signInWithPopup(auth, provider)
+        .then((result) => {
+            const user = result.user;
+            console.log("Xush kelibsiz:", user.displayName);
+            
+            // Ma'lumotlarni localStorage-ga saqlash
+            localStorage.setItem('TORVEX_User', JSON.stringify({
+                name: user.displayName,
+                email: user.email,
+                photo: user.photoURL
+            }));
+
+            location.reload(); // Muvaffaqiyatli kirgach sahifani yangilash
+        })
+        .catch((error) => {
+            console.error("Xato yuz berdi:", error.message);
+            alert("Kirishda xatolik: " + error.message);
+        });
 };
 
-// 3. Asosiy funksiyalar
-function showSection(id) {
-    if (!contentWrapper) return; // Xatolikni oldini olish
 
-    // Animatsiya mantiqi
-    contentWrapper.style.opacity = '0';
-    contentWrapper.style.transform = 'translateY(10px)';
-
-    setTimeout(() => {
-        // Bo'limni almashtirish kodini shu yerga yozing
-        contentWrapper.style.opacity = '1';
-        contentWrapper.style.transform = 'translateY(0)';
-    }, 200);
-}
 
 function renderMasters() {
     console.log("Masterlar yuklanmoqda...");
@@ -200,6 +189,43 @@ function renderNews() {
     `).join('');
 }
 
+
+
+// Funksiyani global window obyektiga chiqaramiz
+window.showSection = function(sectionId) {
+    console.log("Seksiya almashdi:", sectionId);
+
+    // 1. Sahifadagi barcha bo'limlarni (kontentlarni) topish
+    // Eslatma: Sizda har bir bo'limda class="section" bo'lishi kerak
+    const sections = document.querySelectorAll('.section');
+    
+    if (sections.length === 0) {
+        console.error("Xato: '.section' klassiga ega elementlar topilmadi!");
+        return;
+    }
+
+    // 2. Hammasini yashirish
+    sections.forEach(s => {
+        s.style.display = 'none';
+    });
+
+    // 3. Tanlangan bo'limni ko'rsatish
+    const target = document.getElementById(sectionId);
+    if (target) {
+        target.style.display = 'block';
+    } else {
+        console.error("Xato: ID-si '" + sectionId + "' bo'lgan element topilmadi!");
+    }
+
+    // 4. Pastki menyudagi 'active' klassini yangilash
+    document.querySelectorAll('.nav-item-mobile').forEach(item => {
+        item.classList.remove('active');
+    });
+
+    // Bosilgan tugmaga active klassini berish
+    event.currentTarget.classList.add('active');
+};
+
 // 5. SMART SEARCH (Global qidiruv)
 function smartSearch() {
     const query = document.getElementById('globalSearch').value.toLowerCase();
@@ -305,19 +331,24 @@ function saveProfile() {
     alert("Ma'lumotlar muvaffaqiyatli saqlandi!");
 }
 
-// 3. Profil rasmiga rasm yuklash
-document.getElementById('avatarInput').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            document.getElementById('userAvatar').src = event.target.result;
-            // Rasmni ham saqlab qo'yish mumkin (base64)
-            localStorage.setItem('user_avatar', event.target.result);
-        };
-        reader.readAsDataURL(file);
-    }
-});
+// 6. Profil rasmiga rasm yuklash mantiqi (Null xatosini oldini oluvchi xavfsiz variant)
+const avatarInput = document.getElementById('avatarInput');
+if (avatarInput) {
+    avatarInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const userAvatar = document.getElementById('userAvatar');
+                if (userAvatar) {
+                    userAvatar.src = event.target.result;
+                }
+                localStorage.setItem('user_avatar', event.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+}
 
 // 1. Sahifa yuklanganda saqlangan rasmni barcha joyga qaytarish
 window.addEventListener('DOMContentLoaded', () => {
@@ -582,23 +613,44 @@ let cart = [];
 
 
 
-// LOGIN / SIGN IN FUNKSIYASI
-function initiateUserSession(event) {
+// Funksiyani global window obyektiga chiqaramiz
+window.initiateUserSession = function(event) {
     event.preventDefault();
     
-   const user = {
-    name: document.getElementById('regFullName').value,
-    // USERNAME QISMI QO'SHILDI
-    username: document.getElementById('regUsername').value.toLowerCase().trim(), 
-    email: document.getElementById('regEmail').value,
-    id: Math.floor(1000 + Math.random() * 9000), // Random ID
-    joinDate: new Date().toLocaleDateString() //
-};
+    // Ma'lumotlarni olish
+    const fullName = document.getElementById('regFullName').value;
+    const username = document.getElementById('regUsername').value.toLowerCase().trim();
+    const email = document.getElementById('regEmail').value;
 
-    // LOCALSTORAGEGA SAQLASH (ABADIIY)
+    // Tekshiruv (bo'sh qolmasligi uchun)
+    if(!fullName || !username || !email) {
+        alert("Iltimos, barcha maydonlarni to'ldiring!");
+        return;
+    }
+
+    const user = {
+        name: fullName,
+        username: username,
+        email: email,
+        id: Math.floor(1000 + Math.random() * 9000), // Random ID
+        joinDate: new Date().toLocaleDateString()
+    };
+
+    // LOCALSTORAGEGA SAQLASH
     localStorage.setItem('Xebec_Persistent_User', JSON.stringify(user));
-    unlockProfile(user);
-}
+    
+    // Profilni ochish funksiyasini chaqirish
+    if (typeof unlockProfile === "function") {
+        unlockProfile(user);
+    } else {
+        console.log("Sessiya saqlandi, lekin unlockProfile funksiyasi topilmadi.");
+    }
+
+    // Ro'yxatdan o'tgandan keyin asosiy sahifaga o'tkazish
+    if (window.showSection) {
+        window.showSection('dash');
+    }
+};
 
 
 
@@ -1132,21 +1184,3 @@ function openPrivateChat(id, name, img) {
     `;
 }
 
-import { auth, googleProvider } from "./firebase-config.js";
-import { signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { saveUserToDB } from "./database.js";
-
-const googleBtn = document.getElementById('google-btn');
-
-if (googleBtn) {
-    googleBtn.addEventListener('click', async () => {
-        try {
-            const result = await signInWithPopup(auth, googleProvider);
-            // Foydalanuvchi kirgan zahoti bazaga yozamiz
-            await saveUserToDB(result.user);
-            window.location.href = "home.html"; // Muvaffaqiyatli bo'lsa bosh sahifaga
-        } catch (error) {
-            console.error("Login xatosi:", error.message);
-        }
-    });
-}

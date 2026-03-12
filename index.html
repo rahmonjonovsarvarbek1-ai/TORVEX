@@ -27,7 +27,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     <link rel="stylesheet" href="style.css">
 
     <script type="application/ld+json">
@@ -87,501 +87,188 @@
     </nav>
 </aside>
         <main class="main-content">
-            <header class="top-bar">
-                <div class="search-wrapper">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="globalSearch" placeholder="Xizmatlar yoki ustalarni izlash..." onkeyup="smartSearch()">
-                </div>
-                
-                <div class="header-right">
-                    <div class="status-pill"><span class="online-dot"></span> Online</div>
-                    <div class="action-icons">
-                       <div class="icon-wrapper" onclick="showSection('news')" style="cursor: pointer;">
+    <header class="top-bar">
+        <div class="search-wrapper">
+            <i class="fas fa-search"></i>
+            <input type="text" id="globalSearch" placeholder="Xizmatlar yoki ustalarni izlash..." onkeyup="smartSearch()">
+        </div>
+        
+        <div class="header-right">
+            <div class="status-pill"><span class="online-dot"></span> Online</div>
+            <div class="action-icons">
+                <div class="icon-wrapper" onclick="showSection('news')" style="cursor: pointer;">
                     <i class="far fa-bell"></i>
                     <span class="badge">3</span>
                 </div>
-            </header>
-
-            <section id="dash" class="content-section active-section">
-    <div class="welcome-banner-advanced">
-        <div class="banner-overlay"></div>
-        <div class="banner-content">
-            <span class="badge-promo">Yangilik</span>
-            <h1>Xush kelibsiz, <span class="text-gradient">TORVEX</span> dunyosiga!</h1>
-            <p>Bugun bozorda sement narxi <span class="price-drop">-5%</span> ga arzonlashdi. Qurilishni hoziroq boshlang!</p>
-            <div class="banner-btns">
-                <button class="btn-banner-primary">Bozorga o'tish</button>
-                <button class="btn-banner-outline"><i class="fas fa-play"></i> Video qo'llanma</button>
             </div>
         </div>
-        <div class="banner-stats-mini">
-            <div class="mini-stat"><strong>2k+</strong><span>Mahsulotlar</span></div>
-            <div class="mini-stat"><strong>500+</strong><span>Yangi ustalar</span></div>
-        </div>
-    </div>
+    </header>
 
-    <div class="quick-actions-grid">
-        <div class="action-item" onclick="openAddAdModal()">
-            <div class="action-icon blue"><i class="fas fa-plus"></i></div>
-            <span>E'lon berish</span>
-        </div>
-        <div class="action-item">
-            <div class="action-icon orange"><i class="fas fa-bolt"></i></div>
-            <span>Premium</span>
-        </div>
-        <div class="action-item">
-            <div class="action-icon purple"><i class="fas fa-headset"></i></div>
-            <span>Yordam</span>
-        </div>
-    </div>
-
-    <div class="stats-grid">
-        <div class="stat-card glass-effect">
-            <div class="stat-main">
-                <div class="stat-icon purple"><i class="fas fa-users"></i></div>
-                <div class="stat-info">
-                    <h3 class="counter" data-target="1240">0</h3>
-                    <p>Jami Ustalar</p>
+    <section id="home" class="section">
+        <div class="banner-area">
+            <div class="banner-overlay"></div>
+            <div class="banner-content">
+                <span class="badge-promo">Yangilik</span>
+                <h1>Xush kelibsiz, <span class="text-gradient">TORVEX</span> dunyosiga!</h1>
+                <p>Bugun bozorda sement narxi <span class="price-drop">-5%</span> ga arzonlashdi. Qurilishni hoziroq boshlang!</p>
+                <div class="banner-btns">
+                    <button class="btn-banner-primary" onclick="showSection('bozor')">Bozorga o'tish</button>
+                    <button class="btn-banner-outline"><i class="fas fa-play"></i> Video qo'llanma</button>
                 </div>
             </div>
-            <div class="stat-chart"><span class="trend up"><i class="fas fa-arrow-up"></i> 12%</span></div>
-        </div>
-        
-        <div class="stat-card glass-effect">
-            <div class="stat-main">
-                <div class="stat-icon orange"><i class="fas fa-hard-hat"></i></div>
-                <div class="stat-info">
-                    <h3 class="counter" data-target="452">0</h3>
-                    <p>Faol buyurtmalar</p>
-                </div>
+            <div class="banner-stats-mini">
+                <div class="mini-stat"><strong>2k+</strong><span>Mahsulotlar</span></div>
+                <div class="mini-stat"><strong>500+</strong><span>Yangi ustalar</span></div>
             </div>
-            <div class="stat-chart"><span class="trend up"><i class="fas fa-arrow-up"></i> 5%</span></div>
         </div>
 
-        <div class="stat-card glass-effect">
-            <div class="stat-main">
-                <div class="stat-icon green"><i class="fas fa-coins"></i></div>
-                <div class="stat-info">
-                    <h3 class="counter" data-target="12500000">0</h3>
-                    <p>Savdo (so'm)</p>
-                </div>
+        <div class="quick-actions-grid">
+            <div class="action-item" onclick="openAddAdModal()">
+                <div class="action-icon blue"><i class="fas fa-plus"></i></div>
+                <span>E'lon berish</span>
             </div>
-            <div class="stat-chart"><span class="trend down"><i class="fas fa-arrow-down"></i> 2%</span></div>
+            <div class="action-item">
+                <div class="action-icon orange"><i class="fas fa-bolt"></i></div>
+                <span>Premium</span>
+            </div>
+            <div class="action-item">
+                <div class="action-icon purple"><i class="fas fa-headset"></i></div>
+                <span>Yordam</span>
+            </div>
         </div>
-    </div>
 
-    <div class="section-title-area">
-        <h2 class="sub-title">Top reytingli mutaxassislar</h2>
-        <a href="#" class="view-all" onclick="showSection('ustalar')">Barchasini ko'rish <i class="fas fa-chevron-right"></i></a>
-    </div>
-    <div id="featuredMasters" class="grid-container">
-        </div>
-</section>
-
-<section id="muhokama" class="content-section" style="display: none;">
-    <div class="messenger-container" id="messengerMain">
-        
-        <div class="chat-sidebar">
-            <div class="chat-header">
-                <div class="header-top">
-                    <h3>Xabarlar</h3>
-                    <button class="settings-btn" onclick="toggleSettings()">
-                        <i class="fas fa-cog"></i>
-                    </button>
+        <div class="stats-grid">
+            <div class="stat-card glass-effect">
+                <div class="stat-main">
+                    <div class="stat-icon purple"><i class="fas fa-users"></i></div>
+                    <div class="stat-info">
+                        <h3 class="counter" data-target="1240">0</h3>
+                        <p>Jami Ustalar</p>
+                    </div>
                 </div>
-                
-                <div class="chat-filters">
-                    <button class="filter-btn active" onclick="filterChats('all', this)">Hammasi</button>
-                    <button class="filter-btn" onclick="filterChats('direct', this)">Lichka</button>
-                    <button class="filter-btn" onclick="filterChats('group', this)">Guruhlar</button>
-                </div>
-
-                <div class="chat-search">
-                    <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Qidirish..." oninput="searchMessages(this.value)">
-                </div>
+                <div class="stat-chart"><span class="trend up"><i class="fas fa-arrow-up"></i> 12%</span></div>
             </div>
             
-            <div id="chatList" class="chat-list">
+            <div class="stat-card glass-effect">
+                <div class="stat-main">
+                    <div class="stat-icon orange"><i class="fas fa-hard-hat"></i></div>
+                    <div class="stat-info">
+                        <h3 class="counter" data-target="452">0</h3>
+                        <p>Faol buyurtmalar</p>
+                    </div>
                 </div>
-        </div>
-
-        <div class="chat-main">
-            <div id="noChatSelected" class="empty-chat">
-                <div class="empty-content animate-fade-in">
-                    <div class="empty-icon"><i class="far fa-comments"></i></div>
-                    <h3>TORVEX Muloqot</h3>
-                    <p>Suhbatni boshlash uchun kontaktni tanlang</p>
-                </div>
+                <div class="stat-chart"><span class="trend up"><i class="fas fa-arrow-up"></i> 5%</span></div>
             </div>
 
-            <div id="activeChat" class="active-chat-container" style="display: none;">
-                <div class="active-chat-header">
-                    <div class="chat-user-meta">
-                        <button class="mobile-back-btn" onclick="closeConversation()">
-                            <i class="fas fa-arrow-left"></i>
-                        </button>
-                        <div class="avatar-wrapper">
+            <div class="stat-card glass-effect">
+                <div class="stat-main">
+                    <div class="stat-icon green"><i class="fas fa-coins"></i></div>
+                    <div class="stat-info">
+                        <h3 class="counter" data-target="12500000">0</h3>
+                        <p>Savdo (so'm)</p>
+                    </div>
+                </div>
+                <div class="stat-chart"><span class="trend down"><i class="fas fa-arrow-down"></i> 2%</span></div>
+            </div>
+        </div>
+
+        <div class="section-title-area">
+            <h2 class="sub-title">Top reytingli mutaxassislar</h2>
+            <a href="#" class="view-all" onclick="showSection('ustalar')">Barchasini ko'rish <i class="fas fa-chevron-right"></i></a>
+        </div>
+        <div id="featuredMasters" class="grid-container">
+            </div>
+    </section>
+
+    <section id="muhokama" class="section" style="display: none;">
+        <div class="messenger-container" id="messengerMain">
+            <div class="chat-sidebar">
+                <div class="chat-header">
+                    <div class="header-top">
+                        <h3>Xabarlar</h3>
+                        <button class="settings-btn" onclick="toggleSettings()"><i class="fas fa-cog"></i></button>
+                    </div>
+                    <div class="chat-filters">
+                        <button class="filter-btn active" onclick="filterChats('all', this)">Hammasi</button>
+                        <button class="filter-btn" onclick="filterChats('direct', this)">Lichka</button>
+                        <button class="filter-btn" onclick="filterChats('group', this)">Guruhlar</button>
+                    </div>
+                    <div class="chat-search">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Qidirish..." oninput="searchMessages(this.value)">
+                    </div>
+                </div>
+                <div id="chatList" class="chat-list"></div>
+            </div>
+
+            <div class="chat-main">
+                <div id="noChatSelected" class="empty-chat">
+                    <div class="empty-content animate-fade-in">
+                        <div class="empty-icon"><i class="far fa-comments"></i></div>
+                        <h3>TORVEX Muloqot</h3>
+                        <p>Suhbatni boshlash uchun kontaktni tanlang</p>
+                    </div>
+                </div>
+
+                <div id="activeChat" class="active-chat-container" style="display: none;">
+                    <div class="active-chat-header">
+                        <div class="chat-user-meta">
+                            <button class="mobile-back-btn" onclick="closeConversation()"><i class="fas fa-arrow-left"></i></button>
                             <img src="" id="activeChatAvatar" class="user-mini-avatar">
-                            <span class="online-badge"></span>
+                            <div class="user-details">
+                                <h4 id="activeChatName">Ali Valiyev</h4>
+                                <span class="status-text">onlayn</span>
+                            </div>
                         </div>
-                        <div class="user-details">
-                            <h4 id="activeChatName">Foydalanuvchi</h4>
-                            <span id="activeChatStatus" class="status-text">onlayn</span>
-                        </div>
-                    </div>
-                    
-                    <div class="header-actions">
-                        <button class="action-btn"><i class="fas fa-phone"></i></button>
-                        <button class="action-btn" onclick="toggleChatDropdown()">
-                            <i class="fas fa-ellipsis-v"></i>
-                        </button>
-                        <div id="chatDropdown" class="dropdown-menu">
-                            <div class="dropdown-item" onclick="viewProfile()"><i class="far fa-user"></i> Profil</div>
-                            <div class="dropdown-item" onclick="clearHistory()"><i class="far fa-trash-alt"></i> Tozalash</div>
+                        <div class="header-actions">
+                            <button class="action-btn"><i class="fas fa-phone"></i></button>
+                            <button class="action-btn" onclick="toggleChatDropdown()"><i class="fas fa-ellipsis-v"></i></button>
                         </div>
                     </div>
-                </div>
 
-                <div class="active-chat-header">
-    <div class="chat-user-meta">
-        <button class="mobile-back-btn" onclick="closeConversation()" style="display: none;">
-            <i class="fas fa-arrow-left"></i>
-        </button>
-        <img src="" id="activeChatAvatar" class="user-mini-avatar">
-        <div class="user-details">
-            <h4 id="activeChatName">Ali Valiyev</h4>
-            <span class="status-text">onlayn</span>
-        </div>
-    </div>
-</div>
+                    <div id="messageDisplay" class="message-area-x"></div>
 
-                <div class="chat-main-x">
-    <div id="messageDisplay" class="message-area-x">
-        </div>
-
-    <div class="chat-input-area-x">
-        <div class="x-actions-bar">
-            <button class="x-icon-btn"><i class="far fa-image"></i></button>
-            <button class="x-icon-btn"><i class="far fa-face-smile"></i></button>
-            <button class="x-icon-btn"><i class="fas fa-list-ul"></i></button>
-        </div>
-        <div class="input-container-x">
-            <textarea 
-                id="chatMessageInput" 
-                placeholder="Yangi xabar yozing..." 
-                rows="1" 
-                oninput="autoHeight(this)"
-            ></textarea>
-            <button class="x-send-btn" onclick="handleSendMessage()">
-                <i class="fas fa-paper-plane"></i>
-            </button>
-        </div>
-    </div>
-</div>
-</section>
-<section id="bozor" class="content-section">
-    <div class="bozor-header">
-        <div class="bozor-title">
-            <h2>Xebec Marketplace <span class="badge-new">Yangilandi</span></h2>
-            <p>Eng sifatli qurilish materiallari va asbob-uskunalar bir joyda</p>
-        </div>
-        <div class="cart-preview" onclick="toggleCart()">
-            <i class="fas fa-shopping-cart"></i>
-            <span id="cartCount">0</span>
-        </div>
-    </div>
-
-    <div class="market-categories">
-        <button class="cat-chip active" onclick="filterMarket('all')">Hammasi</button>
-        <button class="cat-chip" onclick="filterMarket('materials')"><i class="fas fa-bricks"></i> Materiallar</button>
-        <button class="cat-chip" onclick="filterMarket('tools')"><i class="fas fa-tools"></i> Asboblar</button>
-        <button class="cat-chip" onclick="filterMarket('paints')"><i class="fas fa-paint-roller"></i> Bo'yoqlar</button>
-        <button class="cat-chip" onclick="filterMarket('electric')"><i class="fas fa-plug"></i> Elektr</button>
-    </div>
-
-    <div class="market-grid" id="marketGrid">
-        <div class="product-card" data-category="tools">
-            <div class="product-badge">Top</div>
-            <div class="product-img">
-                <img src="https://images.unsplash.com/photo-1581147036324-c17ac41dfa6c?auto=format&fit=crop&q=80&w=400" alt="Drill">
-            </div>
-            <div class="product-info">
-                <span class="p-cat">Asboblar</span>
-                <h4>Bosch Professional Drel</h4>
-                <div class="p-rating"><i class="fas fa-star"></i> 4.9 <span>(120 ta sharh)</span></div>
-                <div class="p-footer">
-                    <div class="p-price">1,250,000 <span>UZS</span></div>
-                    <button class="add-cart-btn" onclick="addToCart(this)"><i class="fas fa-plus"></i></button>
-                </div>
-            </div>
-        </div>
-        </div>
-</section>
-
-<section id="news" class="content-section">
-    <div class="news-header-area">
-        <div class="news-title">
-            <h2>Soha Yangiliklari</h2>
-            <p>Qurilish va texnologiya olamidagi so'nggi o'zgarishlar</p>
-        </div>
-        <div class="news-filters">
-            <button class="filter-chip active">Barchasi</button>
-            <button class="filter-chip">Texnologiya</button>
-            <button class="filter-chip">Bozor tahlili</button>
-        </div>
-    </div>
-
-    <div class="featured-news-card">
-        <div class="featured-img">
-            <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&q=80&w=800" alt="Construction">
-            <span class="news-badge">Hafta yangiligi</span>
-        </div>
-        <div class="featured-content">
-            <div class="news-meta">
-                <span><i class="far fa-calendar"></i> 7-Mart, 2026</span>
-                <span><i class="far fa-clock"></i> 5 daqiqa o'qish</span>
-            </div>
-            <h3>O'zbekistonda 3D-printer yordamida uylar qurish boshlanmoqda</h3>
-            <p>Yangi texnologiya qurilish xarajatlarini 30% ga kamaytirish imkonini beradi. Mutaxassislar ushbu metodning afzalliklari haqida...</p>
-            <button class="btn-read-more">To'liq o'qish <i class="fas fa-arrow-right"></i></button>
-        </div>
-    </div>
-
-    <div class="news-grid-advanced" id="newsGrid">
-        <div class="mini-news-card">
-            <div class="mini-img">
-                <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&q=80&w=400" alt="Tools">
-            </div>
-            <div class="mini-content">
-                <span class="news-tag">Bozor</span>
-                <h4>Sement narxi pasayishi kutilmoqda</h4>
-                <div class="mini-footer">
-                    <span>1 soat oldin</span>
-                    <div class="mini-actions">
-                        <i class="far fa-bookmark" title="Saqlash"></i>
-                        <i class="fas fa-share-alt" title="Ulashish"></i>
+                    <div class="chat-input-area-x">
+                        <div class="x-actions-bar">
+                            <button class="x-icon-btn"><i class="far fa-image"></i></button>
+                            <button class="x-icon-btn"><i class="far fa-face-smile"></i></button>
+                        </div>
+                        <div class="input-container-x">
+                            <textarea id="chatMessageInput" placeholder="Yangi xabar yozing..." rows="1"></textarea>
+                            <button class="x-send-btn" onclick="handleSendMessage()"><i class="fas fa-paper-plane"></i></button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
 
-        <div class="mini-news-card">
-            <div class="mini-img">
-                <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&q=80&w=400" alt="Tech">
+    <section id="bozor" class="section" style="display: none;">
+        <div class="bozor-header">
+            <div class="bozor-title">
+                <h2>TORVEX Marketplace <span class="badge-new">Yangilandi</span></h2>
+                <p>Eng sifatli qurilish materiallari va asbob-uskunalar bir joyda</p>
             </div>
-            <div class="mini-content">
-                <span class="news-tag">Texnika</span>
-                <h4>Yangi avlod ekskavatorlari taqdim etildi</h4>
-                <div class="mini-footer">
-                    <span>4 soat oldin</span>
-                    <div class="mini-actions">
-                        <i class="far fa-bookmark"></i>
-                        <i class="fas fa-share-alt"></i>
-                    </div>
-                </div>
+            <div class="cart-preview" onclick="toggleCart()">
+                <i class="fas fa-shopping-cart"></i>
+                <span id="cartCount">0</span>
             </div>
         </div>
-    </div>
-</section>
+        </section>
 
-           <section id="profil" class="content-section" style="display: none;">
-    <div id="auth-gate" class="auth-wrapper">
-        <div class="auth-card">
-            <div class="auth-header-top">
-                <i class="fas fa-user-shield"></i>
-                <h2>TORVEX-ga xush kelibsiz</h2>
-                <p>Ma'lumotlaringizni saqlash uchun profilingizga kiring</p>
-            </div>
-
-            <div class="social-login">
-                <button class="apple-login-btn" onclick="handleSocialAuth('iCloud')">
-                    <i class="fab fa-apple"></i> iCloud bilan kirish
-                </button>
-            </div>
-
-            <div class="auth-separator"><span>yoki email orqali</span></div>
-
-            <form onsubmit="initiateUserSession(event)">
-                <input type="text" id="regFullName" placeholder="To'liq ismingiz" required class="auth-field">
-            <div class="username-field-wrapper" style="position: relative; margin-bottom: 15px;">
-                <span style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #00b894; font-weight: bold;">@</span>
-                <input type="text" id="regUsername" placeholder="username" required class="auth-field" style="padding-left: 35px !important; width: 100%;">
-            </div>
-                <input type="email" id="regEmail" placeholder="Email manzilingiz" required class="auth-field">
-                <input type="password" id="regPass" placeholder="Parol yarating" required class="auth-field">
-                <button type="submit" class="auth-action-btn">Profilni yaratish va Kirish</button>
-            </form>
-        </div>
-    </div>
-
-    <div id="real-profile-content" style="display: none;">
-        <div class="profile-page-wrapper">
-            <div class="profile-header">
-                <div class="cover-photo">
-                    <button class="btn-settings-premium" onclick="toggleDrawer()">
-                      <i class="fas fa-cog"></i>
-                    </button>
-                    <button class="edit-cover"><i class="fas fa-pen"></i></button>
+    <section id="profil" class="section" style="display: none;">
+        <div id="auth-gate" class="auth-wrapper">
+            <div class="auth-card">
+                <h2>Kirish</h2>
                 </div>
-                <div class="profile-main">
-                    <div class="avatar-container">
-    <div class="avatar-wrapper">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ccc'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E" 
-             id="userAvatar" 
-             class="default-avatar">
-    </div>
-    
-    <label for="avatarInput" class="change-photo">
-        <i class="fas fa-camera"></i>
-        <input type="file" id="avatarInput" hidden accept="image/*" onchange="previewImage(event)">
-    </label>
-</div>
-</div>
-                    <div class="profile-title">
-                       <h2 id="displayFullName">Unknown user <i class="fas fa-check-circle verified"></i></h2>
-    
-                     <p id="displayUsername" style="color: #00b894; font-weight: 600; margin: 5px 0;">@username</p>
-
-                   </div>
-                    <div class="profile-actions">
-                        <button class="btn-logout-small" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i></button>
-                    </div>
-                </div>
+   
+   
             </div>
-
-            <div class="profile-sidebar-info">
-    <div class="info-card animate-slide-up">
-        <div class="card-header">
-            <h3><i class="fas fa-id-card"></i> Shaxsiy ma'lumotlar</h3>
-            <span class="user-status-tag">VIP</span>
-        </div>
         
-        <div class="info-list">
-    <div class="info-row">
-        <div class="info-label"><i class="fas fa-phone-alt"></i> Tel:</div>
-        <div class="info-value-wrapper">
-            <strong id="displayPhone">+998 90 123 45 67</strong>
-            <input type="text" id="editPhone" class="edit-input" style="display:none;">
-            <button class="btn-edit-small" onclick="toggleEdit('Phone')"><i class="fas fa-edit"></i></button>
-            <button class="btn-save-small" id="savePhone" style="display:none;" onclick="saveField('Phone')"><i class="fas fa-check"></i></button>
-        </div>
-    </div>
-
-    <div class="info-row">
-        <div class="info-value-wrapper">
-            <strong id="displayTelegram">@UnknownUser</strong>
-            <input type="text" id="editTelegram" class="edit-input" style="display:none;">
-            <button class="btn-edit-small" onclick="toggleEdit('Telegram')"><i class="fas fa-edit"></i></button>
-            <button class="btn-save-small" id="saveTelegram" style="display:none;" onclick="saveField('Telegram')"><i class="fas fa-check"></i></button>
-        </div>
-    </div>
-
-    <div class="info-row">
-        <div class="info-label"><i class="fas fa-briefcase"></i> Soha:</div>
-        <div class="info-value-wrapper">
-            <strong id="displayJob">Kasbingiz</strong>
-            <input type="text" id="editJob" class="edit-input" style="display:none;">
-            <button class="btn-edit-small" onclick="toggleEdit('Job')"><i class="fas fa-edit"></i></button>
-            <button class="btn-save-small" id="saveJob" style="display:none;" onclick="saveField('Job')"><i class="fas fa-check"></i></button>
-        </div>
-    </div>
-
-    <div class="info-row">
-        <div class="info-label"><i class="fas fa-map-marker-alt"></i> Manzil:</div>
-        <div class="info-value-wrapper">
-            <strong id="displayCity">Toshkent, O'zbekiston</strong>
-            <input type="text" id="editCity" class="edit-input" style="display:none;">
-            <button class="btn-edit-small" onclick="toggleEdit('City')"><i class="fas fa-edit"></i></button>
-            <button class="btn-save-small" id="saveCity" style="display:none;" onclick="saveField('City')"><i class="fas fa-check"></i></button>
-        </div>
-    </div>
-</div>
-
-        <div class="card-actions">
-            <button class="btn-delete-account" onclick="confirmAccountDeletion()">
-                <i class="fas fa-user-slash"></i> Hisobni butunlay o'chirish
-            </button>
-        </div>
-    </div>
-</div>
-
-                <div class="wallet-card animate-slide-up" style="animation-delay: 0.1s">
-                    <div class="wallet-info">
-                        <p>Joriy balans</p>
-                        <h2 id="displayBalance">0<span>UZS</span></h2>
-                    </div>
-                    <div class="wallet-actions">
-                        <button class="btn-topup"><i class="fas fa-plus"></i> To'ldirish</button>
-                        <button class="btn-withdraw"><i class="fas fa-arrow-up"></i> Yechish</button>
-                    </div>
-                    <div class="balance-footer">
-                        <i class="fas fa-info-circle"></i> Keyingi to'lovga 3 kun qoldi
-                    </div>
-                </div>
-
-                <div class="rating-card animate-slide-up" style="animation-delay: 0.2s">
-                    <p>Foydalanuvchi reytingi</p>
-                    <div class="rating-stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
-                        <span>4.8</span>
-                    </div>
-                    <div class="progress-container">
-                        <div class="progress-bar" style="width: 85%"></div>
-                    </div>
-                    <small>Siz ustalarning top 10% ligidasiz</small>
-                </div>
+        <div id="real-profile-content" style="display: none;">
             </div>
-
-            <div class="profile-content">
-                <div class="tabs-container">
-                    <div class="tabs">
-                        <button class="tab-item active" onclick="switchTab(this, 'ads')">
-                            <i class="fas fa-th-large"></i> 
-                            <span>E'lonlarim</span>
-                            <span class="tab-badge">0</span>
-                        </button>
-                        <button class="tab-item" onclick="switchTab(this, 'reviews')">
-                            <i class="fas fa-star"></i> 
-                            <span>Sharhlar</span>
-                            <span class="tab-badge secondary">12</span>
-                        </button>
-                        <button class="tab-item" onclick="switchTab(this, 'security')">
-                            <i class="fas fa-shield-alt"></i> 
-                            <span>Xavfsizlik</span>
-                        </button>
-                    </div>
-                    <div class="tabs-indicator"></div> 
-                </div>
-
-                <div class="tab-content-wrapper" id="tabContent">
-                    <div id="ads-section" class="animate-fade-in">
-    <div class="content-header">
-        <h3>Mening e'lonlarim <span id="adsCount" class="count-pill">0</span></h3>
-        <button class="btn-add-new" onclick="openAddAdModal()">
-            <i class="fas fa-plus-circle"></i> Yangi qo'shish
-        </button>
-    </div>
-    
-    <div id="myAdsList" class="ads-grid">
-        <div class="empty-state-advanced">
-            <div class="illustration-box"><i class="fas fa-folder-plus"></i></div>
-            <h4>Hozircha e'lonlar yo'q</h4>
-            <p>Xizmatlaringizni taklif qilish uchun birinchi e'loningizni joylashtiring.</p>
-        </div>
-    </div>
-</div>
-            </div>
-            </div>
-    </div>
-    
-    <div id="editModal" class="modal-overlay">
-        </div>
-</section>
+    </section>
+</main>
 
 
 <section id="sozlamalar" class="content-section">
@@ -845,10 +532,17 @@ function toggleSidebar() {
         <span class="close-btn" onclick="closeModal('auth-modal')">&times;</span>
         <h3><i class="far fa-user"></i> Tizimga kirish</h3>
         <hr>
-        <input type="email" placeholder="Emailingizni yozing" class="modal-input">
-        <button class="modal-submit-btn">Kirish</button>
+        <input type="email" id="modalEmail" placeholder="Emailingizni yozing" class="modal-input">
+        <button class="modal-submit-btn" onclick="initiateUserSession(event)">Kirish</button>
+        
+        <div style="margin: 15px 0; text-align: center; color: #888;">yoki</div>
+
+        <button onclick="loginWithGoogle()" class="google-auth-btn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; background: white; border: 1px solid #ddd; padding: 10px; border-radius: 8px; cursor: pointer;">
+            <i class="fab fa-google" style="color: #4285F4;"></i> Google orqali kirish
+        </button>
     </div>
 </div>
+
 
 <div id="settingsDrawer" class="settings-drawer">
     <div class="drawer-header">
