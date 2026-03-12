@@ -6,15 +6,18 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebas
 import { 
     getAuth, 
     GoogleAuthProvider, 
+    OAuthProvider, // Apple uchun
     signInWithPopup, 
-    onAuthStateChanged 
+    onAuthStateChanged,
+    RecaptchaVerifier, // Telefon uchun
+    signInWithPhoneNumber // Telefon uchun
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getDatabase } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
 
 const firebaseConfig = {
   apiKey: "AIzaSyDc-kYemWOasjaYyLc5x0TVDxe93Jls2z8",
-  authDomain: "torvex-xxxx.firebaseapp.com", // Bu yerga o'zingning real domainingni qo'y
+  authDomain: "torvex-xxxx.firebaseapp.com", 
   projectId: "torvex-xxxx",
   storageBucket: "torvex-xxxx.firebasestorage.app",
   messagingSenderId: "999014412743",
@@ -25,8 +28,18 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Eksportlar - script.js bularni ko'ra olishi shart
+// Eksportlar
 export const auth = getAuth(app);
+export const db = getDatabase(app);
+
+// Provayderlar
 export const googleProvider = new GoogleAuthProvider();
-export const db = getDatabase(app); 
-export { signInWithPopup, onAuthStateChanged };
+export const appleProvider = new OAuthProvider('apple.com'); // Apple provayderi
+
+// Metodlar
+export { 
+    signInWithPopup, 
+    onAuthStateChanged, 
+    RecaptchaVerifier, 
+    signInWithPhoneNumber 
+};

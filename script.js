@@ -10,8 +10,11 @@
 import { 
     auth, 
     googleProvider, 
+    appleProvider, // Yangi qo'shildi
     signInWithPopup, 
-    onAuthStateChanged 
+    onAuthStateChanged,
+    RecaptchaVerifier, // Yangi qo'shildi
+    signInWithPhoneNumber // Yangi qo'shildi
 } from './firebase-config.js';
 
 // --- 2. AUTH & USER MANAGEMENT (Tizimga kirish va Profil) ---
@@ -28,10 +31,43 @@ window.loginWithGoogle = async () => {
     }
 };
 
-// 2.2 Telefon orqali kirish (Siz so'ragan Phone auth uchun qolip)
-window.loginWithPhone = () => {
-    alert("Telefon orqali kirish xizmati tez kunda ishga tushadi!");
-    // Kelajakda Firebase RecaptchaVerifier va signInWithPhoneNumber shu yerga qo'shiladi
+window.loginWithPhone = async () => {
+    // 1. Foydalanuvchidan raqamni so'rash
+    const phoneNumber = prompt("Telefon raqamingizni kiriting:", "+998901234567");
+    
+    if (!phoneNumber) return;
+
+    // 2. ReCAPTCHA-ni sozlash (Invisible)
+    // 'auth-modal' bu sizning modal oynangizning ID-si bo'lishi kerak
+    if (!window.recaptchaVerifier) {
+        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'auth-modal', {
+            'size': 'invisible'
+        });
+    }
+
+    try {
+        const appVerifier = window.recaptchaVerifier;
+        
+        // 3. SMS yuborish so'rovi (Test raqam bo'lgani uchun SMS kelmaydi)
+        const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
+        
+        // 4. Test kodini kiritish (Siz o'rnatgan 123456)
+        const code = prompt("Siz belgilagan 6 xonali test kodini kiriting:");
+        
+        if (code) {
+            const result = await confirmationResult.confirm(code);
+            console.log("Muvaffaqiyatli kirildi!", result.user);
+            alert("Xush kelibsiz! Telefon orqali kirish tasdiqlandi.");
+            
+            // Modalni yopish (agar funksiyangiz nomi shunday bo'lsa)
+            if (typeof window.toggleAuthModal === 'function') {
+                window.toggleAuthModal(false);
+            }
+        }
+    } catch (error) {
+        console.error("Xatolik:", error.code);
+        alert("Xatolik yuz berdi: " + error.message);
+    }
 };
 
 // 2.3 Apple orqali kirish
