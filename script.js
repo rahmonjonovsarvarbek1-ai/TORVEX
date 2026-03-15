@@ -27,7 +27,9 @@ import {
     orderBy, 
     onSnapshot, 
     deleteDoc, 
-    doc 
+    doc,
+    getDoc, // QO'SHILDI
+    setDoc  // QO'SHILDI
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 // --- ENDI PASTROQDA HECH QANDAY 'IMPORT' BO'LMASIN ---
@@ -303,14 +305,34 @@ window.loginWithPhone = async () => {
     // if (authModal) authModal.style.display = 'none';
 };
 
-function checkAuthState() {
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            AppState.user = user;
-            updateUIForUser(user);
-        }
-    });
-}
+// E. SAQLASH FUNKSIYASI (Siz boshlagan funksiya davomi)
+window.updatePersonalDetails = async function() {
+    const user = auth.currentUser;
+    if (!user) return alert("Avval tizimga kiring!");
+
+    const saveBtn = document.querySelector('.save-btn-modern');
+    const originalText = saveBtn.innerHTML;
+    
+    const profileData = {
+        username: document.getElementById('dbUsername').value.trim(),
+        phone: "+998" + document.getElementById('dbPhone').value.trim(),
+        birthdate: document.getElementById('dbBirthdate').value,
+        region: document.getElementById('dbRegion').value,
+        role: document.querySelector('input[name="profileRole"]:checked')?.value || 'observer',
+        updatedAt: serverTimestamp()
+    };
+
+    try {
+        saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saqlanmoqda...';
+        await setDoc(doc(db, "users", user.uid), profileData, { merge: true });
+        alert("Ma'lumotlaringiz TORVEX bazasida saqlandi!");
+    } catch (e) {
+        console.error("Saqlashda xato:", e);
+        alert("Xatolik: " + e.message);
+    } finally {
+        saveBtn.innerHTML = originalText;
+    }
+};
 
 function updateUIForUser(user) {
     const authGate = document.getElementById('auth-gate');
@@ -583,59 +605,35 @@ window.previewImage = function(event) {
     }
 };
 
-// 3. Ma'lumotlarni saqlash (Update)
+// E. SAQLASH FUNKSIYASI (Siz boshlagan funksiya davomi)
 window.updatePersonalDetails = async function() {
+    const user = auth.currentUser;
+    if (!user) return alert("Avval tizimga kiring!");
+
     const saveBtn = document.querySelector('.save-btn-modern');
     const originalText = saveBtn.innerHTML;
     
-    // Ma'lumotlarni yig'ish
+    
     const profileData = {
         username: document.getElementById('dbUsername').value.trim(),
         phone: "+998" + document.getElementById('dbPhone').value.trim(),
         birthdate: document.getElementById('dbBirthdate').value,
         region: document.getElementById('dbRegion').value,
-        role: document.querySelector('input[name="profileRole"]:checked')?.value || 'observer'
+        role: document.querySelector('input[name="profileRole"]:checked')?.value || 'observer',
+        updatedAt: serverTimestamp()
     };
 
-    // Validatsiya (Oddiy misol)
-    if (!profileData.username || profileData.phone.length < 13) {
-        showToast("Iltimos, barcha maydonlarni to'g'ri to'ldiring!", "error");
-        return;
-    }
-
-    // Yuklanish holati (Loading state)
-    saveBtn.disabled = true;
-    saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saqlanmoqda...';
-
     try {
-        // BU YERDA: Backend yoki Firebase API ga yuborish
-        // await db.collection('users').doc(userId).update(profileData);
-        
-        console.log("Saqlangan ma'lumotlar:", profileData);
-        
-        // Muvaffaqiyatli saqlash
-        setTimeout(() => {
-            saveBtn.disabled = false;
-            saveBtn.innerHTML = originalText;
-            showToast("Ma'lumotlar muvaffaqiyatli saqlandi!", "success");
-        }, 1500);
-
-    } catch (error) {
-        saveBtn.disabled = false;
+        saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saqlanmoqda...';
+        await setDoc(doc(db, "users", user.uid), profileData, { merge: true });
+        alert("Ma'lumotlaringiz TORVEX bazasida saqlandi!");
+    } catch (e) {
+        console.error("Saqlashda xato:", e);
+        alert("Xatolik: " + e.message);
+    } finally {
         saveBtn.innerHTML = originalText;
-        showToast("Xatolik yuz berdi!", "error");
     }
 };
-
-// 4. Chiqish (Logout)
-window.handleLogout = function() {
-    if (confirm("Haqiqatan ham profildan chiqmoqchimisiz?")) {
-        // firebase.auth().signOut();
-        toggleAuthUI(false);
-        showToast("Tizimdan chiqildi", "info");
-    }
-};
-
 
 
 // 6. Toast bildirishnomasi (Yaxshi UX uchun)
