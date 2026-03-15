@@ -105,20 +105,48 @@
     <section id="dash" class="section">
         <div class="banner-area">
             <div class="banner-overlay"></div>
-            <div class="banner-content">
-                <span class="badge-promo">Yangilik</span>
-                <h1>Xush kelibsiz, <span class="text-gradient">TORVEX</span> dunyosiga!</h1>
-                <p>Bugun bozorda sement narxi <span class="price-drop">-5%</span> ga arzonlashdi. Qurilishni hoziroq boshlang!</p>
-                <div class="banner-btns">
-                    <button class="btn-banner-primary" onclick="showSection('bozor')">Bozorga o'tish</button>
-                    <button class="btn-banner-outline"><i class="fas fa-play"></i> Video qo'llanma</button>
-                </div>
-            </div>
-            <div class="banner-stats-mini">
-                <div class="mini-stat"><strong>2k+</strong><span>Mahsulotlar</span></div>
-                <div class="mini-stat"><strong>500+</strong><span>Yangi ustalar</span></div>
+           <div class="banner-card">
+    <div class="banner-content">
+        <div class="badge-wrapper">
+            <span class="badge-promo">Yangilik</span>
+            <span class="badge-update">Sement narxi -5%</span>
+        </div>
+        
+        <h1>Xush kelibsiz, <br><span class="text-gradient">TORVEX</span> dunyosiga!</h1>
+        
+        <p class="banner-desc">
+            Sifatli qurilish materiallari va tajribali ustalarni bir joydan toping. 
+            Bugun bozorda narxlar arzonlashgan, qurilishni hoziroq boshlang!
+        </p>
+        
+        <div class="banner-btns">
+            <button class="btn-banner-primary" onclick="showSection('bozor')">
+                <i class="fas fa-shopping-cart"></i> Bozorga o'tish
+            </button>
+            <button class="btn-banner-outline">
+                <i class="fas fa-play-circle"></i> Qo'llanma
+            </button>
+        </div>
+    </div>
+
+    <div class="banner-stats-grid">
+        <div class="mini-stat-card">
+            <div class="stat-icon blue"><i class="fas fa-tools"></i></div>
+            <div class="stat-info">
+                <strong>Sifatli mahsulotlar</strong>
+                <span>Har xil turdagi qurilish mollarini topishingiz mumkin</span>
             </div>
         </div>
+        
+        <div class="mini-stat-card">
+            <div class="stat-icon green"><i class="fas fa-user-hard-hat"></i></div>
+            <div class="stat-info">
+                <strong>E'lonlar va Ustalar</strong>
+                <span>Tajribali mutaxassislar va kunlik ishchilarni tez toping</span>
+            </div>
+        </div>
+    </div>
+</div>
 
         <div class="quick-actions-grid">
     <div class="action-item" onclick="openAddAdModal()">
@@ -136,46 +164,7 @@
         <span>Yordam</span>
     </div>
 </div>
-        <div class="stats-grid">
-            <div class="stat-card glass-effect">
-                <div class="stat-main">
-                    <div class="stat-icon purple"><i class="fas fa-users"></i></div>
-                    <div class="stat-info">
-                        <h3 class="counter" data-target="1240">0</h3>
-                        <p>Jami Ustalar</p>
-                    </div>
-                </div>
-                <div class="stat-chart"><span class="trend up"><i class="fas fa-arrow-up"></i> 12%</span></div>
-            </div>
-            
-            <div class="stat-card glass-effect">
-                <div class="stat-main">
-                    <div class="stat-icon orange"><i class="fas fa-hard-hat"></i></div>
-                    <div class="stat-info">
-                        <h3 class="counter" data-target="452">0</h3>
-                        <p>Faol buyurtmalar</p>
-                    </div>
-                </div>
-                <div class="stat-chart"><span class="trend up"><i class="fas fa-arrow-up"></i> 5%</span></div>
-            </div>
-
-            <div class="stat-card glass-effect">
-                <div class="stat-main">
-                    <div class="stat-icon green"><i class="fas fa-coins"></i></div>
-                    <div class="stat-info">
-                        <h3 class="counter" data-target="12500000">0</h3>
-                        <p>Savdo (so'm)</p>
-                    </div>
-                </div>
-                <div class="stat-chart"><span class="trend down"><i class="fas fa-arrow-down"></i> 2%</span></div>
-            </div>
-        </div>
-
-        <div class="section-title-area">
-            <h2 class="sub-title">Top reytingli mutaxassislar</h2>
-            <a href="#" class="view-all" onclick="showSection('ustalar')">Barchasini ko'rish <i class="fas fa-chevron-right"></i></a>
-        </div>
-        <div id="featuredMasters" class="grid-container"></div>
+        
     </section>
 
     <section id="dash" class="section">

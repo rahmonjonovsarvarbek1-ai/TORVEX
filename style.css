@@ -4418,3 +4418,164 @@ input[type="radio"]:checked + .role-card {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+/* Banner Card - Umumiy konteyner */
+.banner-card {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 24px;
+    padding: 40px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    margin-bottom: 30px;
+}
+
+/* Fon effekti (Dekoratsiya) */
+.banner-card::after {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    background: rgba(13, 138, 188, 0.2);
+    filter: blur(80px);
+    border-radius: 50%;
+}
+
+/* Sarlavha */
+.banner-content h1 {
+    font-size: 2.8rem;
+    line-height: 1.2;
+    margin: 20px 0;
+    font-weight: 800;
+}
+
+.text-gradient {
+    /* 1. Standart rang (agar gradient ishlamay qolsa foydalaniladi) */
+    color: #38bdf8; 
+    
+    /* 2. Gradient fon */
+    background: linear-gradient(90deg, #38bdf8, #818cf8);
+    
+    /* 3. Matnni qirqib olish (Barcha brauzerlar uchun) */
+    background-clip: text; 
+    -webkit-background-clip: text; /* Safari va Chrome uchun majburiy */
+    
+    /* 4. Matn rangini shaffof qilish */
+    -webkit-text-fill-color: transparent; 
+    
+    /* Qo'shimcha xavfsizlik uchun (ba'zi brauzerlar uchun) */
+    display: inline-block; 
+}
+
+/* Badge */
+.badge-wrapper {
+    display: flex;
+    gap: 10px;
+}
+
+.badge-promo {
+    background: #38bdf8;
+    color: #000;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.badge-update {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Tugmalar */
+.banner-btns {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn-banner-primary {
+    background: #38bdf8;
+    color: #0f172a;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-banner-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(56, 189, 248, 0.3);
+}
+
+.btn-banner-outline {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 14px 28px;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* Statistika Grid */
+.banner-stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 40px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 30px;
+}
+
+.mini-stat-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 18px;
+}
+
+.stat-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.stat-icon.blue { background: rgba(56, 189, 248, 0.2); color: #38bdf8; }
+.stat-icon.green { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+
+.stat-info strong {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.stat-info span {
+    font-size: 12px;
+    color: #94a3b8;
+    line-height: 1.4;
+}
+
+/* Mobil moslashuv */
+@media (max-width: 768px) {
+    .banner-card { padding: 25px; }
+    .banner-content h1 { font-size: 2rem; }
+    .banner-stats-grid { grid-template-columns: 1fr; }
+    .banner-btns { flex-direction: column; }
+}
