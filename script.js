@@ -6,19 +6,18 @@
 
 "use strict";
 
-// FAQAT SHU YERDA IMPORT QILING
+
 import { 
     auth, 
     db, 
     googleProvider, 
-    appleProvider, 
+
     signInWithPopup, 
-    onAuthStateChanged,
-    RecaptchaVerifier, 
-    signInWithPhoneNumber 
+    onAuthStateChanged, 
+    signOut 
 } from './firebase-config.js';
-
-
+// 2. Firestore funksiyalarini ham 'db' qayerdan kelayotgan bo'lsa, o'sha versiyada ishlating.
+// Agar 'db' config ichida 'getFirestore()' bo'lsa, quyidagi importlarni ham config ichiga o'tkazgan ma'qul.
 import { 
     collection, 
     addDoc, 
@@ -28,10 +27,10 @@ import {
     onSnapshot, 
     deleteDoc, 
     doc,
-    getDoc, // QO'SHILDI
-    setDoc  // QO'SHILDI
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
+    getDoc, 
+    setDoc 
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"; 
+// DIQQAT: firebase-config.js ichidagi versiya ham 10.8.0 ekanligiga ishonch hosil qiling!
 // --- ENDI PASTROQDA HECH QANDAY 'IMPORT' BO'LMASIN ---
 // --- ENDI PASTROQDA HECH QANDAY 'IMPORT' BO'LMASIN ---
 
@@ -80,61 +79,81 @@ window.loginWithApple = () => {
 
 
 
-
-// closeModal funksiyasini ham global qilib qo'yamiz (X tugmasi ishlashi uchun)
+// 1. Global funksiyalarni e'lon qilish (HTML onclick ishlashi uchun)
 window.closeModal = (id) => {
     const modal = document.getElementById(id);
     if (modal) modal.style.display = 'none';
 };
+
+window.updateComposerUserInfo = function(user) {
+    const avatarImg = document.getElementById('user-avatar-composer');
+    const composerTitle = document.querySelector('.composer-header span');
+    
+    if (user && avatarImg && composerTitle) {
+        avatarImg.src = user.photoURL || 'assets/default-avatar.png';
+        composerTitle.innerText = user.displayName || "Yangi e'lon";
+    }
+};
+
+// 2. Auth holatini kuzatish
 onAuthStateChanged(auth, async (user) => {
     if (user) {
-        AppState.user = user;
+        // AppState bormi yoki yo'qligini tekshirish (xato bermasligi uchun)
+        if (typeof AppState !== 'undefined') AppState.user = user;
+        
         console.log("Sessiya faol:", user.email);
-         
+        
         try {
-            // Hujjatni olish
-            const userDoc = await getDoc(doc(db, 'users', user.uid));
+            // Firestore'dan foydalanuvchi ma'lumotlarini olish
+            const userDocRef = doc(db, 'users', user.uid);
+            const userDoc = await getDoc(userDocRef);
             
             if (userDoc.exists()) {
                 const data = userDoc.data();
                 
-                // Inputlarni to'ldirish
-                if (document.getElementById('dbUsername')) document.getElementById('dbUsername').value = data.username || '';
-                if (document.getElementById('dbRegion')) document.getElementById('dbRegion').value = data.region || 'Andijon';
-                if (document.getElementById('dbBirthdate')) document.getElementById('dbBirthdate').value = data.birthdate || '';
+                // Inputlarni to'ldirish (Xavfsiz tekshiruv bilan)
+                const fields = {
+                    'dbUsername': data.username || '',
+                    'dbRegion': data.region || 'Andijon',
+                    'dbBirthdate': data.birthdate || ''
+                };
+
+                for (const [id, value] of Object.entries(fields)) {
+                    const el = document.getElementById(id);
+                    if (el) el.value = value;
+                }
                 
-                // Telefon raqami (+998 ni olib tashlab ko'rsatish)
-                if (document.getElementById('dbPhone') && data.phone) {
-                    document.getElementById('dbPhone').value = data.phone.replace("+998", "");
+                // Telefon raqami
+                const phoneEl = document.getElementById('dbPhone');
+                if (phoneEl && data.phone) {
+                    phoneEl.value = data.phone.replace("+998", "");
                 }
                 
                 // Rolni aktivlashtirish
                 if (data.role) {
-                       window.currentSelectedRole = data.role;
+                    window.currentSelectedRole = data.role;
                     if (window.selectProfileRole) window.selectProfileRole(data.role);
                 }
             }
         } catch (error) {
             console.error("Ma'lumot yuklashda xato:", error);
-         }
+        }
         
-        renderProfile();
-    } else {
-        AppState.user = null;
-        resetProfileUI();
-    }
-    // Foydalanuvchi ma'lumotlarini composer-ga yuklash
-window.updateComposerUserInfo = function(user) {
-    const avatarImg = document.getElementById('user-avatar-composer');
-    const composerTitle = document.querySelector('.composer-header span');
-    
-    if (user) {
-        // Foydalanuvchi rasmini va ismini qo'yamiz
-        avatarImg.src = user.photoURL || 'default-avatar.png';
-        composerTitle.innerText = user.displayName || "Yangi e'lon";
-    }
-};
+        // UI funksiyalarini chaqirish
+        if (window.renderProfile) renderProfile();
+        window.updateComposerUserInfo(user);
+        
+        // AGAR OQ OYNA BO'LSA: Asosiy bo'limni ko'rsatishni majburlash
+        if (window.showSection) showSection('asosiy');
 
+    } else {
+        if (typeof AppState !== 'undefined') AppState.user = null;
+        if (window.resetProfileUI) resetProfileUI();
+        
+        // Kirilmagan bo'lsa login (profil) oynasiga o'tkazish
+        if (window.showSection) showSection('profil');
+
+    }
 });
 
 
@@ -191,85 +210,33 @@ const TORVEX_DATA = {
     ]
 };
 
-// --- 3. GLOBAL STATE (ILOVA HOLATI) ---
-let AppState = {
-    user: null,
-    cart: JSON.parse(localStorage.getItem('torvex_cart')) || [],
-    currentTheme: localStorage.getItem('theme') || 'light'
-};
+
 
 
 
 
 window.loginWithGoogle = async function() {
-    // 1. Tugmani bloklash (Loading holati)
     const googleBtn = document.querySelector('.social-btn.google');
-    const originalContent = googleBtn.innerHTML;
-    
+    if (googleBtn.disabled) return; // Ikki marta bosishni oldini olish
+
     try {
         googleBtn.disabled = true;
-        googleBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Kirilmoqda...';
+        googleBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>...';
         
-        console.log("Google tizimiga ulanish boshlandi...");
-        
-        // 2. Firebase Popup orqali kirish
+        // signInWithPopup ishlatishdan oldin keshni tozalash uchun
         const result = await signInWithPopup(auth, googleProvider);
-        const user = result.user;
-
-        // 3. Foydalanuvchi ma'lumotlarini Firestore bazasiga tekshirish/qo'shish
-        // Bu qism foydalanuvchi ma'lumotlarini TORVEX bazasida saqlashga yordam beradi
-        const userDocRef = doc(db, "users", user.uid);
-        const userDoc = await getDoc(userDocRef);
-
-        if (!userDoc.exists()) {
-            // Agar yangi foydalanuvchi bo'lsa, bazaga boshlang'ich ma'lumotlarni yozamiz
-            await setDoc(userDocRef, {
-                uid: user.uid,
-                displayName: user.displayName,
-                email: user.email,
-                photoURL: user.photoURL,
-                role: 'observer', // standart rol
-                createdAt: serverTimestamp()
-            });
-            console.log("Yangi foydalanuvchi bazaga qo'shildi.");
+        if (result.user) {
+            showSection('asosiy');
         }
-
-        // 4. UI ni yangilash
-        updateUIForUser(user);
-        showToast("Xush kelibsiz, " + user.displayName + "!", "success");
-
-        // 5. Modalni yopish (Silliq animatsiya bilan)
-        const authModal = document.getElementById('auth-modal');
-        if (authModal) {
-            authModal.style.opacity = '0';
-            setTimeout(() => {
-                authModal.style.display = 'none';
-                authModal.style.opacity = '1';
-            }, 300);
-        }
-
     } catch (error) {
-        console.error("Auth xatosi:", error.code);
-        
-        // Xatolarni foydalanuvchiga tushunarli tilda ko'rsatish
-        let errorMessage = "Tizimga kirishda xatolik yuz berdi.";
-        
-        if (error.code === 'auth/popup-closed-by-user') {
-            errorMessage = "Login oynasi yopildi. Qayta urinib ko'ring.";
-        } else if (error.code === 'auth/network-request-failed') {
-            errorMessage = "Internet aloqasini tekshiring.";
-        } else if (error.code === 'auth/cancelled-popup-request') {
-            errorMessage = "Bir vaqtning o'zida bir nechta so'rov yuborildi.";
-        }
-
-        showToast(errorMessage, "error");
-        
+        console.error("Login xatosi:", error);
     } finally {
-        // Tugmani asl holatiga qaytarish
         googleBtn.disabled = false;
-        googleBtn.innerHTML = originalContent;
+        googleBtn.innerHTML = 'Google orqali kirish';
     }
 };
+
+
 
 // 5.1 EMAIL ORQALI KIRISH (Siz so'ragan funksiya)
 window.initiateUserSession = async (event) => {
@@ -352,56 +319,49 @@ function updateUIForUser(user) {
     }
 }
 
-// --- 6. NAVIGATION ENGINE (BO'LIMLAR) ---
+
 window.showSection = function(sectionId) {
     const sections = document.querySelectorAll('.section');
     const navItems = document.querySelectorAll('.nav-item, .nav-item-mobile');
 
     const activeSection = document.getElementById(sectionId);
-    if (!activeSection) {
-        console.warn(`Section topilmadi: ${sectionId}`);
-        return;
-    }
+    if (!activeSection) return;
 
-    // 1. Hamma bo'limlarni yashirish
+   
     sections.forEach(s => s.style.display = 'none');
-    
-    // 2. Hamma menyu tugmalaridan 'active' klassini olib tashlash
     navItems.forEach(n => n.classList.remove('active'));
 
-    // 3. Tanlangan bo'limni ko'rsatish
+    
     activeSection.style.display = 'block';
     
-    // 4. Menyu tugmasini aktiv qilish
-    // Agar sectionId 'profil' bo'lsa, pastki menyudagi profil tugmasini topadi
+    // Pastki menyu aktivligini boshqarish
     const navId = sectionId === 'dash' ? 'li-dash' : `li-${sectionId}`;
     const activeNav = document.getElementById(navId);
     if (activeNav) activeNav.classList.add('active');
 
-    // 5. Sidebar bo'lsa yopish (mobil versiya uchun)
-    const sidebar = document.querySelector('.sidebar');
-    if (sidebar) sidebar.classList.remove('active');
-
-    // --- PROFIL UCHUN MAXSUS MANTIQ ---
-    if (sectionId === 'profil') {
-        checkProfileAuthView(); // Profil ochilganda login holatini tekshirish
-    }
+    // Profil bo'limi uchun auth tekshiruvi
+    if (sectionId === 'profil') checkProfileAuthView();
 
     window.scrollTo(0, 0);
 };
 
-// Profil ichidagi bloklarni almashish uchun yordamchi funksiya
+
 function checkProfileAuthView() {
-    const user = auth.currentUser; // Firebase auth'dan joriy foydalanuvchi
+    // auth obyekti yuklanganini tekshiramiz
+    if (typeof auth === 'undefined') return; 
+
+    const user = auth.currentUser; 
     const loggedInDiv = document.getElementById('auth-logged-in');
     const loggedOutDiv = document.getElementById('auth-logged-out');
 
     if (user) {
         if (loggedInDiv) loggedInDiv.style.display = 'block';
         if (loggedOutDiv) loggedOutDiv.style.display = 'none';
+        console.log("Profil: Foydalanuvchi tizimda");
     } else {
         if (loggedInDiv) loggedInDiv.style.display = 'none';
         if (loggedOutDiv) loggedOutDiv.style.display = 'block';
+        console.log("Profil: Foydalanuvchi tizimga kirmagan");
     }
 }
 
@@ -532,173 +492,7 @@ window.selectProfileRole = function(role) {
 
 
 
-// Ma'lumotlarni saqlash funksiyasi
-window.saveFinalProfile = async function() {
-    const user = auth.currentUser;
-    if (!user) return alert("Avval tizimga kiring!");
 
-    const username = document.getElementById('setupUsername').value;
-    const region = document.getElementById('setupRegion').value;
-    const birthdate = document.getElementById('setupBirthdate').value;
-
-    try {
-        // v10 uslubida Firestore-ga yozish
-        await setDoc(doc(db, 'users', user.uid), {
-            fullName: user.displayName,
-            email: user.email,
-            username: username.toLowerCase().trim(),
-            region: region,
-            birthdate: birthdate,
-            setupComplete: true,
-            lastUpdated: serverTimestamp()
-        }, { merge: true });
-
-        alert("Profil muvaffaqiyatli saqlandi!");
-        document.getElementById('setup-profile-modal').style.display = 'none';
-    } catch (error) {
-        console.error("Xatolik:", error);
-        alert("Xatolik yuz berdi!");
-    }
-};
-
-// TORVEX Profil tizimi uchun asosiy logika
-window.addEventListener('DOMContentLoaded', () => {
-    // 1. Dastlabki holatni tekshirish (Tizimga kirgan yoki kirmaganini simulyatsiya qilish)
-    // Haqiqiy loyihada bu yerda Firebase Auth 'onAuthStateChanged' bo'ladi
-    const userLoggedIn = false; // Buni sinov uchun true qilib ko'ring
-    toggleAuthUI(userLoggedIn);
-});
-
-// UI almashtirish funksiyasi
-function toggleAuthUI(isLoggedIn) {
-    const loggedOutSection = document.getElementById('auth-logged-out');
-    const loggedInSection = document.getElementById('auth-logged-in');
-    
-    if (isLoggedIn) {
-        loggedOutSection.style.display = 'none';
-        loggedInSection.style.display = 'block';
-        loggedInSection.classList.add('animate-fade-in');
-    } else {
-        loggedOutSection.style.display = 'block';
-        loggedInSection.style.display = 'none';
-    }
-}
-
-// 2. Avatar rasmini preview qilish
-window.previewImage = function(event) {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        const avatarImg = document.getElementById('userAvatar');
-        
-        // Yuklanish effekti
-        avatarImg.style.opacity = '0.5';
-        
-        reader.onload = function(e) {
-            avatarImg.src = e.target.result;
-            avatarImg.style.opacity = '1';
-            
-            // Bu yerda rasmni serverga (Cloudinary yoki Firebase Storage) yuklash funksiyasini chaqirish mumkin
-            console.log("Rasm yuklashga tayyor...");
-        };
-        reader.readAsDataURL(file);
-    }
-};
-
-// E. SAQLASH FUNKSIYASI (Siz boshlagan funksiya davomi)
-window.updatePersonalDetails = async function() {
-    const user = auth.currentUser;
-    if (!user) return alert("Avval tizimga kiring!");
-
-    const saveBtn = document.querySelector('.save-btn-modern');
-    const originalText = saveBtn.innerHTML;
-    
-    
-    const profileData = {
-        username: document.getElementById('dbUsername').value.trim(),
-        phone: "+998" + document.getElementById('dbPhone').value.trim(),
-        birthdate: document.getElementById('dbBirthdate').value,
-        region: document.getElementById('dbRegion').value,
-        role: document.querySelector('input[name="profileRole"]:checked')?.value || 'observer',
-        updatedAt: serverTimestamp()
-    };
-
-    try {
-        saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saqlanmoqda...';
-        await setDoc(doc(db, "users", user.uid), profileData, { merge: true });
-        alert("Ma'lumotlaringiz TORVEX bazasida saqlandi!");
-    } catch (e) {
-        console.error("Saqlashda xato:", e);
-        alert("Xatolik: " + e.message);
-    } finally {
-        saveBtn.innerHTML = originalText;
-    }
-};
-
-
-// 6. Toast bildirishnomasi (Yaxshi UX uchun)
-function showToast(message, type) {
-    const toast = document.createElement('div');
-    toast.className = `toast toast-${type}`;
-    toast.style = `
-        position: fixed; bottom: 20px; right: 20px; 
-        padding: 12px 25px; border-radius: 10px; color: white;
-        font-weight: 500; z-index: 1000; animation: slideIn 0.3s forwards;
-        background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#4361ee'};
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    `;
-    toast.innerText = message;
-    document.body.appendChild(toast);
-    
-    setTimeout(() => {
-        toast.style.animation = 'slideOut 0.3s forwards';
-        setTimeout(() => toast.remove(), 300);
-    }, 3000);
-}
-
-// CSS animatsiyalarni JS orqali qo'shish (ixtiyoriy)
-const style = document.createElement('style');
-style.innerHTML = `
-    @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
-    @keyframes slideOut { from { transform: translateX(0); } to { transform: translateX(100%); } }
-    .animate-fade-in { animation: fadeIn 0.5s ease-out; }
-`;
-document.head.appendChild(style);
-
-window.toggleAuthModal = function() {
-    // Profil bo'limini topamiz
-    const profilSection = document.getElementById('profil');
-    
-    // Agar bo'lim mavjud bo'lsa
-    if (profilSection) {
-        // Hozirgi holatini tekshiramiz
-        if (profilSection.style.display === 'none' || profilSection.style.display === '') {
-            // Bo'limni ko'rsatish
-            profilSection.style.setProperty('display', 'block', 'important');
-            
-            // Sahifani o'sha bo'limga silliq tushirish
-            profilSection.scrollIntoView({ behavior: 'smooth' });
-            
-            console.log("Profil bo'limi ko'rsatildi");
-        } else {
-            // Agar ochiq bo'lsa, yopish
-            profilSection.style.display = 'none';
-            console.log("Profil bo'limi yopildi");
-        }
-    } else {
-        // Agar ID noto'g'ri bo'lsa konsolda aytadi
-        console.error("Xatolik: ID='profil' bo'lgan element topilmadi. HTML-ni tekshiring!");
-    }
-};
-
-window.openQuickAction = function() {
-    console.log("Tezkor amal tugmasi bosildi!");
-    // Bu yerda menyu ochilishi yoki boshqa amal bo'lishi mumkin
-    // Hozircha xato chiqmasligi uchun bo'sh qoldiramiz
-};
-
-
-let selectedFiles = [];
 
 // 1. E'lon berish modalini ochish
 window.openAddAdModal = function() {
@@ -1019,3 +813,4 @@ function renderNewPost(post) {
     // Yangi postni eng tepaga qo'shish
     feed.insertAdjacentHTML('afterbegin', postHTML);
 }
+
