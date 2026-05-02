@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ── SEO ── -->
+  <title>TORVEX — Sanoat va Usta Platformasi</title>
+  <meta name="description" content="TORVEX — Zamonaviy ustalar portali va qurilish bozori. Malakali mutaxassislar va sifatli mahsulotlar ekotizimi. Sarvarbek Rahmonjonov loyihasi." />
+  <meta name="keywords" content="TORVEX, usta qidirish, qurilish bozori, santexnik, elektrik, Sarvarbek Rahmonjonov" />
+  <meta name="author" content="Sarvarbek Rahmonjonov" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- ── Open Graph ── -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://torvex.uz/" />
+  <meta property="og:title" content="TORVEX | Industrial & Master Ecosystem" />
+  <meta property="og:description" content="Professional ustalar va qurilish materiallari uchun markazlashgan platforma." />
+  <meta property="og:image" content="https://torvex.uz/assets/og-image.jpg" />
+
+  <!-- ── Twitter ── -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="TORVEX — Sarvarbek Rahmonjonov" />
+  <meta name="twitter:description" content="Qurilish va sanoat xizmatlari uchun eng yaxshi platforma." />
+  <meta name="twitter:image" content="https://torvex.uz/assets/twitter-card.jpg" />
+
+  <!-- ── Structured Data ── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "TORVEX",
+    "url": "https://torvex.uz",
+    "author": { "@type": "Person", "name": "Sarvarbek Rahmonjonov" },
+    "description": "Professional ustalar va qurilish bozori uchun zamonaviy sanoat platformasi."
+  }
+  </script>
+
+  <!-- ── Fonts ── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- ── Icons ── -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- ── Stylesheet ── -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- ── Firebase SDKs ── -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js" defer></script>
+
+  <!-- ── Pusher (realtime) ── -->
+  <script src="https://js.pusher.com/8.0.1/pusher.min.js" defer></script>
+</head>
+
+<body class="app-body">
+
+  <!-- ════════════════════════════════════════════════
+       LOADING SCREEN
+  ════════════════════════════════════════════════ -->
+  <div id="loadingScreen" class="loading-screen" aria-hidden="true">
+    <div class="loader-inner">
+      <svg class="loader-logo" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="4" width="24" height="24" rx="3"/>
+        <rect x="32" y="4" width="24" height="24" rx="3" opacity=".6"/>
+        <rect x="4" y="32" width="24" height="24" rx="3" opacity=".6"/>
+        <rect x="32" y="32" width="24" height="24" rx="3" opacity=".3"/>
+      </svg>
+      <span class="loader-brand">TORVEX</span>
+      <div class="loader-bar"><div class="loader-fill"></div></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════
+       APP SHELL
+  ════════════════════════════════════════════════ -->
+  <div class="app-shell" id="appShell">
+
+    <!-- ── SIDEBAR ─────────────────────────────── -->
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Asosiy menyu">
+
+      <!-- Logo -->
+      <div class="sidebar-logo">
+        <svg class="logo-mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="16" height="16" rx="3"/>
+          <rect x="22" y="2" width="16" height="16" rx="3" opacity=".6"/>
+          <rect x="2" y="22" width="16" height="16" rx="3" opacity=".6"/>
+          <rect x="22" y="22" width="16" height="16" rx="3" opacity=".3"/>
+        </svg>
+        <span class="logo-wordmark">TORVEX</span>
+        <button class="sidebar-collapse-btn" id="sidebarCollapseBtn" aria-label="Menyu yopish" onclick="toggleSidebar()">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="sidebar-nav" aria-label="Navigatsiya">
+        <ul class="nav-list" role="list">
+
+          <li class="nav-group-label">Asosiy</li>
+
+          <li class="nav-item active" id="nav-dash" onclick="showSection('dash')" role="button" tabindex="0" aria-current="page">
+            <span class="nav-icon"><i class="fas fa-chart-pie"></i></span>
+            <span class="nav-label">Dashboard</span>
+            <span class="nav-badge">Yangi</span>
+          </li>
+
+          <li class="nav-item" id="nav-feed" onclick="showSection('feed')" role="button" tabindex="0">
+            <span class="nav-icon"><i class="fas fa-stream"></i></span>
+            <span class="nav-label">Lenta</span>
+          </li>
+
+          <li class="nav-item" id="nav-ustalar" onclick="showSection('ustalar')" role="button" tabindex="0">
+            <span class="nav-icon"><i class="fas fa-hard-hat"></i></span>
+            <span class="nav-label">Ustalar</span>
+          </li>
+
+          <li class="nav-item" id="nav-bozor" onclick="showSection('bozor')" role="button" tabindex="0">
+            <span class="nav-icon"><i class="fas fa-store"></i></span>
+            <span class="nav-label">Bozor</span>
+            <span class="nav-dot red"></span>
+          </li>
+
+          <li class="nav-group-label">Ijtimoiy</li>
+
+          <li class="nav-item" id="nav-muhokama" onclick="showSection('muhokama')" role="button" tabindex="0">
+            <span class="nav-icon"><i class="fas fa-comments"></i></span>
+            <span class="nav-label">Muhokama</span>
+            <span class="nav-unread" id="unreadCount">0</span>
+          </li>
+
+          <li class="nav-item" id="nav-loyihalar" onclick="showSection('loyihalar')" role="button" tabindex="0">
+            <span class="nav-icon"><i class="fas fa-briefcase"></i></span>
+            <span class="nav-label">Loyihalar</span>
+          </li>
+
+          <li class="nav-item" id="nav-yangiliklar" onclick="showSection('yangiliklar')" role="button" tabindex="0">
+            <span class="nav-icon"><i class="fas fa-newspaper"></i></span>
+            <span class="nav-label">Yangiliklar</span>
+            <span class="nav-badge blue">3</span>
+          </li>
+
+          <li class="nav-group-label">Shaxsiy</li>
+
+          <li class="nav-item" id="nav-profil" onclick="showSection('profil')" role="button" tabindex="0">
+            <span class="nav-icon"><i class="fas fa-user-circle"></i></span>
+            <span class="nav-label">Profil</span>
+          </li>
+
+          <li class="nav-item" id="nav-sevimlilari" onclick="showSection('sevimlilari')" role="button" tabindex="0">
+            <span class="nav-icon"><i class="fas fa-heart"></i></span>
+            <span class="nav-label">Sevimlilar</span>
+          </li>
+
+          <li class="nav-item" id="nav-sozlamalar" onclick="showSection('sozlamalar')" role="button" tabindex="0">
+            <span class="nav-icon"><i class="fas fa-cog"></i></span>
+            <span class="nav-label">Sozlamalar</span>
+          </li>
+
+        </ul>
+      </nav>
+
+      <!-- Sidebar footer: user / auth -->
+      <div class="sidebar-footer">
+        <!-- Shown when logged out -->
+        <div class="sf-auth" id="sfAuthArea">
+          <button class="btn-sf-login" onclick="openModal('authModal')">
+            <i class="fas fa-sign-in-alt"></i>
+            <span>Kirish / Ro'yxat</span>
+          </button>
+        </div>
+        <!-- Shown when logged in -->
+        <div class="sf-user" id="sfUserArea" style="display:none;">
+          <img src="" alt="Avatar" class="sf-avatar" id="sfAvatar" />
+          <div class="sf-user-info">
+            <span class="sf-name" id="sfName">Foydalanuvchi</span>
+            <span class="sf-role" id="sfRole">Mijoz</span>
+          </div>
+          <button class="sf-menu-btn" onclick="toggleUserMenu()" aria-label="Foydalanuvchi menyusi">
+            <i class="fas fa-ellipsis-v"></i>
+          </button>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- ── OVERLAY (mobile sidebar close) ──────── -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+    <!-- ════════════════════════════════════════════
+         MAIN CONTENT AREA
+    ════════════════════════════════════════════ -->
+    <div class="content-area">
+
+      <!-- ── TOP BAR ──────────────────────────── -->
+      <header class="topbar" id="topbar">
+        <!-- Mobile hamburger -->
+        <button class="topbar-hamburger" onclick="openSidebar()" aria-label="Menyuni ochish">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Global Search -->
+        <div class="topbar-search">
+          <i class="fas fa-search search-icon"></i>
+          <input
+            type="search"
+            id="globalSearch"
+            placeholder="Usta, mahsulot yoki xizmat qidirish..."
+            autocomplete="off"
+            onkeyup="handleGlobalSearch(event)"
+            aria-label="Global qidirish"
+          />
+          <div class="search-results-dropdown" id="searchDropdown" role="listbox" aria-label="Qidiruv natijalari"></div>
+        </div>
+
+        <!-- Topbar right cluster -->
+        <div class="topbar-right">
+          <!-- Theme toggle -->
+          <button class="topbar-icon-btn" id="themeToggle" onclick="toggleTheme()" aria-label="Mavzuni almashtirish" title="Mavzu">
+            <i class="fas fa-moon" id="themeIcon"></i>
+          </button>
+
+          <!-- Notifications -->
+          <div class="topbar-notif" id="notifTrigger" onclick="toggleNotifPanel()" role="button" tabindex="0" aria-label="Bildirishnomalar">
+            <i class="fas fa-bell"></i>
+            <span class="notif-badge" id="notifBadge">3</span>
+          </div>
+
+          <!-- Cart shortcut -->
+          <div class="topbar-cart" onclick="showSection('bozor')" role="button" tabindex="0" aria-label="Savat">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-badge" id="cartBadge">0</span>
+          </div>
+
+          <!-- User avatar / login shortcut -->
+          <div class="topbar-user" id="topbarUser" onclick="openModal('authModal')" role="button" tabindex="0" aria-label="Kirish">
+            <div class="user-avatar-placeholder"><i class="fas fa-user"></i></div>
+          </div>
+        </div>
+      </header>
+
+      <!-- ── NOTIFICATION PANEL ──────────────── -->
+      <div class="notif-panel" id="notifPanel" role="dialog" aria-label="Bildirishnomalar paneli" aria-hidden="true">
+        <div class="notif-panel-header">
+          <h3>Bildirishnomalar</h3>
+          <button onclick="markAllRead()" class="btn-mark-read">Hammasini o'qildi</button>
+        </div>
+        <ul class="notif-list" id="notifList" role="list">
+          <!-- JS tomonidan to'ldiriladi -->
+        </ul>
+        <a class="notif-see-all" onclick="showSection('yangiliklar'); toggleNotifPanel()">Barchasini ko'rish <i class="fas fa-chevron-right"></i></a>
+      </div>
+
+      <!-- ════════════════════════════════════
+           SECTIONS
+      ════════════════════════════════════ -->
+      <main class="sections-wrapper" id="sectionsWrapper">
+
+        <!-- ╔══════════════════════════════════
+             § DASHBOARD
+        ══════════════════════════════════╗ -->
+        <section id="dash" class="section active" aria-label="Dashboard">
+
+          <!-- Hero Banner -->
+          <div class="hero-banner">
+            <div class="hero-bg-grid"></div>
+            <div class="hero-content">
+              <div class="hero-eyebrow">
+                <span class="pill pill-accent"><i class="fas fa-bolt"></i> Yangi</span>
+                <span class="pill pill-muted">Sement narxi −5%</span>
+              </div>
+              <h1 class="hero-title">
+                Qurilish va ustalarni<br />
+                <span class="gradient-text">bir joydan toping.</span>
+              </h1>
+              <p class="hero-desc">
+                TORVEX — O'zbekistonning yagona sanoat ekotizimi. Ishonchli ustalar,
+                sifatli materiallar va real narxlar.
+              </p>
+              <div class="hero-actions">
+                <button class="btn-primary" onclick="showSection('bozor')">
+                  <i class="fas fa-store"></i> Bozorga o'tish
+                </button>
+                <button class="btn-ghost" onclick="showSection('ustalar')">
+                  <i class="fas fa-hard-hat"></i> Usta topish
+                </button>
+              </div>
+            </div>
+            <div class="hero-stats-cluster">
+              <div class="stat-card">
+                <span class="stat-number" data-count="1240">0</span>
+                <span class="stat-label">Faol Ustalar</span>
+              </div>
+              <div class="stat-card accent">
+                <span class="stat-number" data-count="3800">0</span>
+                <span class="stat-label">Mahsulotlar</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-number" data-count="560">0</span>
+                <span class="stat-label">Bajarilgan Loyihalar</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-number" data-count="98">0</span>
+                <span class="stat-label">% Mamnuniyat</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="quick-actions-row">
+            <button class="qa-tile" onclick="openModal('adModal')" aria-label="E'lon berish">
+              <span class="qa-icon blue"><i class="fas fa-plus"></i></span>
+              <span class="qa-text">E'lon berish</span>
+            </button>
+            <button class="qa-tile" onclick="openModal('premiumModal')" aria-label="Premium">
+              <span class="qa-icon amber"><i class="fas fa-crown"></i></span>
+              <span class="qa-text">Premium</span>
+            </button>
+            <button class="qa-tile" onclick="showSection('ustalar')" aria-label="Usta topish">
+              <span class="qa-icon green"><i class="fas fa-hard-hat"></i></span>
+              <span class="qa-text">Usta topish</span>
+            </button>
+            <button class="qa-tile" onclick="openModal('supportModal')" aria-label="Yordam">
+              <span class="qa-icon purple"><i class="fas fa-headset"></i></span>
+              <span class="qa-text">Yordam</span>
+            </button>
+            <button class="qa-tile" onclick="showSection('loyihalar')" aria-label="Yangi loyiha">
+              <span class="qa-icon red"><i class="fas fa-briefcase"></i></span>
+              <span class="qa-text">Loyiha</span>
+            </button>
+            <button class="qa-tile" onclick="openModal('calcModal')" aria-label="Narx hisoblash">
+              <span class="qa-icon teal"><i class="fas fa-calculator"></i></span>
+              <span class="qa-text">Hisoblash</span>
+            </button>
+          </div>
+
+          <!-- Dashboard Grid: Feed + Sidebar widgets -->
+          <div class="dash-grid">
+
+            <!-- Left: Activity Feed -->
+            <div class="dash-feed-col">
+              <div class="section-header">
+                <h2 class="section-title">Lenta <span class="count-chip" id="feedCount">0</span></h2>
+                <button class="btn-sm-ghost" onclick="showSection('feed')">Barchasi <i class="fas fa-arrow-right"></i></button>
+              </div>
+
+              <!-- Post Composer (collapsed) -->
+              <div class="composer-card" id="composerCard">
+                <div class="composer-avatar-area">
+                  <div class="composer-avatar" id="composerAvatar"><i class="fas fa-user"></i></div>
+                </div>
+                <button class="composer-prompt" onclick="openComposer()" aria-label="Yangi post yozish">
+                  Bugun nima bo'ldi? E'lon yozing...
+                </button>
+                <div class="composer-shortcuts">
+                  <button onclick="openComposer('photo')" aria-label="Rasm yuklash"><i class="fas fa-camera"></i> Rasm</button>
+                  <button onclick="openComposer('price')" aria-label="Narx qo'shish"><i class="fas fa-tag"></i> Narx</button>
+                  <button onclick="openComposer('job')" aria-label="Ish e'loni"><i class="fas fa-hammer"></i> Ish</button>
+                </div>
+              </div>
+
+              <!-- Posts container -->
+              <div id="postsFeed" class="posts-feed" role="feed" aria-label="E'lonlar lentasi">
+                <!-- Populated by script.js -->
+                <div class="feed-skeleton" aria-hidden="true">
+                  <div class="sk-card"></div>
+                  <div class="sk-card"></div>
+                  <div class="sk-card"></div>
+                </div>
+              </div>
+
+              <button class="btn-load-more" id="loadMoreFeed" onclick="loadMorePosts()">
+                <i class="fas fa-spinner fa-spin" style="display:none" id="loadMoreSpinner"></i>
+                Ko'proq ko'rish
+              </button>
+            </div>
+
+            <!-- Right: Widgets -->
+            <aside class="dash-widgets-col" aria-label="Vidjetlar">
+
+              <!-- Top Masters Widget -->
+              <div class="widget-card">
+                <div class="widget-header">
+                  <span class="widget-title"><i class="fas fa-trophy"></i> Top Ustalar</span>
+                  <a onclick="showSection('ustalar')" role="button" tabindex="0">Barchasi</a>
+                </div>
+                <ul class="top-masters-list" id="topMastersList" role="list">
+                  <!-- Populated by script.js -->
+                </ul>
+              </div>
+
+              <!-- Price Ticker Widget -->
+              <div class="widget-card">
+                <div class="widget-header">
+                  <span class="widget-title"><i class="fas fa-chart-line"></i> Narxlar</span>
+                  <span class="live-pill"><i class="fas fa-circle"></i> Live</span>
+                </div>
+                <ul class="price-ticker-list" id="priceTicker" role="list">
+                  <!-- Populated by script.js -->
+                </ul>
+              </div>
+
+              <!-- My Active Projects Widget -->
+              <div class="widget-card" id="myProjectsWidget">
+                <div class="widget-header">
+                  <span class="widget-title"><i class="fas fa-briefcase"></i> Loyihalarim</span>
+                  <a onclick="showSection('loyihalar')" role="button" tabindex="0">Barchasi</a>
+                </div>
+                <div class="project-mini-list" id="projectMiniList">
+                  <div class="widget-empty">
+                    <i class="fas fa-folder-open"></i>
+                    <p>Hali loyiha yo'q</p>
+                    <button onclick="openModal('adModal')" class="btn-sm">Yaratish</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Weather / Region Widget -->
+              <div class="widget-card">
+                <div class="widget-header">
+                  <span class="widget-title"><i class="fas fa-map-marker-alt"></i> Hudud</span>
+                </div>
+                <div class="region-widget" id="regionWidget">
+                  <span id="regionName">Toshkent</span>
+                  <div class="region-meta">
+                    <span><i class="fas fa-thermometer-half"></i> <span id="regionTemp">—</span>°C</span>
+                    <span><i class="fas fa-users"></i> <span id="regionMasters">0</span> usta</span>
+                  </div>
+                </div>
+              </div>
+
+            </aside>
+          </div>
+        </section>
+
+        <!-- ╔══════════════════════════════════
+             § FULL FEED (Lenta)
+        ══════════════════════════════════╗ -->
+        <section id="feed" class="section" aria-label="E'lonlar lentasi" style="display:none;">
+          <div class="page-header">
+            <div>
+              <h2 class="page-title">E'lonlar Lentasi</h2>
+              <p class="page-subtitle">Barcha yangi e'lonlar va yangilanishlar</p>
+            </div>
+            <button class="btn-primary" onclick="openComposer()"><i class="fas fa-plus"></i> E'lon</button>
+          </div>
+
+          <div class="feed-filters-bar">
+            <button class="feed-filter-btn active" onclick="filterFeed('all',this)">Hammasi</button>
+            <button class="feed-filter-btn" onclick="filterFeed('sale',this)"><i class="fas fa-tag"></i> Sotiladi</button>
+            <button class="feed-filter-btn" onclick="filterFeed('job',this)"><i class="fas fa-briefcase"></i> Ish</button>
+            <button class="feed-filter-btn" onclick="filterFeed('buy',this)"><i class="fas fa-shopping-bag"></i> Xarid</button>
+            <button class="feed-filter-btn" onclick="filterFeed('service',this)"><i class="fas fa-tools"></i> Xizmat</button>
+          </div>
+
+          <div id="fullFeedContainer" class="posts-feed" role="feed">
+            <!-- Populated by script.js -->
+          </div>
+        </section>
+
+        <!-- ╔══════════════════════════════════
+             § USTALAR (Masters Catalog)
+        ══════════════════════════════════╗ -->
+        <section id="ustalar" class="section" aria-label="Ustalar katalogi" style="display:none;">
+          <div class="page-header">
+            <div>
+              <h2 class="page-title">Mutaxassislar Katalogi</h2>
+              <p class="page-subtitle">
+                O'z ishining ustalarini reyting va tajribasi bo'yicha toping
+                — <strong id="totalMasters">0</strong> ta mutaxassis
+              </p>
+            </div>
+            <button class="btn-primary" onclick="openModal('becomeMasterModal')">
+              <i class="fas fa-hard-hat"></i> Usta bo'lish
+            </button>
+          </div>
+
+          <!-- Search & Sort Bar -->
+          <div class="masters-controls">
+            <div class="masters-search-wrap">
+              <i class="fas fa-search"></i>
+              <input
+                type="search"
+                id="masterSearch"
+                placeholder="Ism yoki mutaxassislik..."
+                onkeyup="searchMasters()"
+                aria-label="Usta qidirish"
+              />
+            </div>
+            <select class="select-input" onchange="sortMasters(this.value)" aria-label="Saralash">
+              <option value="rating">Reyting bo'yicha</option>
+              <option value="exp">Tajriba bo'yicha</option>
+              <option value="price_asc">Narx (arzon)</option>
+              <option value="price_desc">Narx (qimmat)</option>
+              <option value="reviews">Sharhlar bo'yicha</option>
+            </select>
+            <button class="btn-ghost-sm" onclick="toggleMapView()" id="mapViewBtn">
+              <i class="fas fa-map"></i> Xaritada
+            </button>
+          </div>
+
+          <!-- Category Chips -->
+          <div class="filter-chips-row" role="group" aria-label="Kategoriya filtrlari">
+            <button class="chip active" onclick="filterByJob('all', this)">Barchasi</button>
+            <button class="chip" onclick="filterByJob('Elektrik', this)"><i class="fas fa-bolt"></i> Elektrik</button>
+            <button class="chip" onclick="filterByJob('Santexnik', this)"><i class="fas fa-faucet"></i> Santexnik</button>
+            <button class="chip" onclick="filterByJob('Malyar', this)"><i class="fas fa-paint-roller"></i> Malyar</button>
+            <button class="chip" onclick="filterByJob('Kafelchi', this)"><i class="fas fa-th-large"></i> Kafelchi</button>
+            <button class="chip" onclick="filterByJob('Duradgor', this)"><i class="fas fa-hammer"></i> Duradgor</button>
+            <button class="chip" onclick="filterByJob('Gipschi', this)"><i class="fas fa-layer-group"></i> Gipschi</button>
+            <button class="chip" onclick="filterByJob('Kranchik', this)"><i class="fas fa-truck-loading"></i> Kranchik</button>
+            <button class="chip" onclick="filterByJob('Konditsioner', this)"><i class="fas fa-snowflake"></i> Konditsioner</button>
+          </div>
+
+          <!-- Masters Grid -->
+          <div id="mastersGrid" class="masters-grid" role="list" aria-label="Ustalar ro'yxati">
+            <!-- Populated by script.js -->
+          </div>
+
+          <!-- Map View (hidden by default) -->
+          <div id="mastersMapView" class="masters-map-view" style="display:none;" aria-label="Ustalar xaritasi">
+            <div id="mastersMap" class="map-placeholder">
+              <i class="fas fa-map-marked-alt"></i>
+              <p>Xarita yuklanmoqda...</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ╔══════════════════════════════════
+             § BOZOR (Marketplace)
+        ══════════════════════════════════╗ -->
+        <section id="bozor" class="section" aria-label="Bozor" style="display:none;">
+          <div class="page-header">
+            <div>
+              <h2 class="page-title">TORVEX Bozor <span class="badge-updated">Yangilandi</span></h2>
+              <p class="page-subtitle">Sifatli qurilish materiallari va asbob-uskunalar</p>
+            </div>
+            <button class="btn-icon-label" onclick="toggleCart()" aria-label="Savat">
+              <i class="fas fa-shopping-cart"></i>
+              <span id="cartCountLabel">0</span> ta mahsulot
+            </button>
+          </div>
+
+          <!-- Market Controls -->
+          <div class="market-controls">
+            <div class="market-search-wrap">
+              <i class="fas fa-search"></i>
+              <input
+                type="search"
+                id="marketSearch"
+                placeholder="Mahsulot qidirish..."
+                onkeyup="searchMarket()"
+                aria-label="Mahsulot qidirish"
+              />
+            </div>
+            <select class="select-input" onchange="sortMarket(this.value)" aria-label="Saralash">
+              <option value="popular">Mashhurlik</option>
+              <option value="price_asc">Narx ↑</option>
+              <option value="price_desc">Narx ↓</option>
+              <option value="new">Yangi</option>
+            </select>
+            <div class="view-toggle" role="group" aria-label="Ko'rinish">
+              <button class="view-btn active" onclick="setMarketView('grid',this)" aria-label="Grid ko'rinish">
+                <i class="fas fa-th"></i>
+              </button>
+              <button class="view-btn" onclick="setMarketView('list',this)" aria-label="List ko'rinish">
+                <i class="fas fa-list"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Category Bar -->
+          <div class="market-category-bar" id="marketCategoryBar" role="group" aria-label="Kategoriyalar">
+            <button class="cat-btn active" onclick="filterMarket('all',this)"><i class="fas fa-border-all"></i> Hammasi</button>
+            <button class="cat-btn" onclick="filterMarket('sement',this)"><i class="fas fa-cubes"></i> Sement</button>
+            <button class="cat-btn" onclick="filterMarket('arma',this)"><i class="fas fa-grip-lines"></i> Armatura</button>
+            <button class="cat-btn" onclick="filterMarket('gips',this)"><i class="fas fa-layer-group"></i> Gips</button>
+            <button class="cat-btn" onclick="filterMarket('elektr',this)"><i class="fas fa-plug"></i> Elektr</button>
+            <button class="cat-btn" onclick="filterMarket('santex',this)"><i class="fas fa-faucet"></i> Santexnika</button>
+            <button class="cat-btn" onclick="filterMarket('asbob',this)"><i class="fas fa-tools"></i> Asboblar</button>
+            <button class="cat-btn" onclick="filterMarket('bo\'yoq',this)"><i class="fas fa-fill-drip"></i> Bo'yoq</button>
+          </div>
+
+          <!-- Product Grid -->
+          <div id="marketGrid" class="market-grid" role="list" aria-label="Mahsulotlar">
+            <!-- Populated by script.js -->
+          </div>
+        </section>
+
+        <!-- ╔══════════════════════════════════
+             § MUHOKAMA (Messenger)
+        ══════════════════════════════════╗ -->
+        <section id="muhokama" class="section section-no-pad" aria-label="Muhokama" style="display:none;">
+          <div class="messenger-layout">
+
+            <!-- Contacts sidebar -->
+            <div class="messenger-sidebar" id="messengerSidebar">
+              <div class="ms-header">
+                <h3>Xabarlar</h3>
+                <button onclick="openModal('newChatModal')" class="btn-icon" aria-label="Yangi suhbat">
+                  <i class="fas fa-edit"></i>
+                </button>
+              </div>
+              <div class="ms-filter-tabs" role="tablist">
+                <button role="tab" class="ms-tab active" onclick="filterChats('all',this)">Hammasi</button>
+                <button role="tab" class="ms-tab" onclick="filterChats('direct',this)">Lichka</button>
+                <button role="tab" class="ms-tab" onclick="filterChats('group',this)">Guruhlar</button>
+              </div>
+              <div class="ms-search">
+                <i class="fas fa-search"></i>
+                <input type="search" placeholder="Qidirish..." oninput="searchChats(this.value)" aria-label="Chat qidirish" />
+              </div>
+              <ul class="ms-chat-list" id="chatList" role="list" aria-label="Suhbatlar ro'yxati">
+                <!-- Populated by script.js -->
+              </ul>
+            </div>
+
+            <!-- Chat area -->
+            <div class="messenger-main" id="messengerMain">
+              <!-- Empty state -->
+              <div class="ms-empty" id="msEmpty">
+                <div class="ms-empty-icon"><i class="far fa-comments"></i></div>
+                <h3>TORVEX Muloqot</h3>
+                <p>Suhbatni boshlash uchun kontaktni tanlang</p>
+                <button onclick="openModal('newChatModal')" class="btn-primary">Yangi suhbat</button>
+              </div>
+
+              <!-- Active conversation -->
+              <div class="ms-conversation" id="msConversation" style="display:none;" aria-live="polite">
+                <div class="ms-conv-header">
+                  <button class="btn-icon mobile-only" onclick="closeConversation()" aria-label="Orqaga">
+                    <i class="fas fa-arrow-left"></i>
+                  </button>
+                  <img src="" alt="" class="ms-peer-avatar" id="msPeerAvatar" />
+                  <div class="ms-peer-info">
+                    <h4 id="msPeerName">—</h4>
+                    <span class="ms-status" id="msPeerStatus">Offline</span>
+                  </div>
+                  <div class="ms-conv-actions">
+                    <button class="btn-icon" onclick="startVoiceCall()" aria-label="Ovozli qo'ng'iroq"><i class="fas fa-phone"></i></button>
+                    <button class="btn-icon" onclick="startVideoCall()" aria-label="Video qo'ng'iroq"><i class="fas fa-video"></i></button>
+                    <button class="btn-icon" onclick="openChatInfo()" aria-label="Ma'lumot"><i class="fas fa-info-circle"></i></button>
+                  </div>
+                </div>
+
+                <div class="ms-messages" id="msMessages" role="log" aria-label="Xabarlar" aria-live="polite">
+                  <!-- Messages populated by script.js -->
+                </div>
+
+                <div class="ms-input-area">
+                  <button class="btn-icon" onclick="attachFile()" aria-label="Fayl biriktirish"><i class="fas fa-paperclip"></i></button>
+                  <button class="btn-icon" onclick="attachImage()" aria-label="Rasm yuborish"><i class="far fa-image"></i></button>
+                  <div class="ms-input-wrap">
+                    <textarea
+                      id="msInput"
+                      class="ms-textarea"
+                      placeholder="Xabar yozing..."
+                      rows="1"
+                      onkeydown="handleChatKey(event)"
+                      oninput="autoResizeTextarea(this)"
+                      aria-label="Xabar matni"
+                    ></textarea>
+                  </div>
+                  <button class="btn-icon" onclick="toggleEmoji()" aria-label="Emoji"><i class="far fa-smile"></i></button>
+                  <button class="btn-send" onclick="sendMessage()" aria-label="Yuborish">
+                    <i class="fas fa-paper-plane"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ╔══════════════════════════════════
+             § LOYIHALAR (Projects)
+        ══════════════════════════════════╗ -->
+        <section id="loyihalar" class="section" aria-label="Loyihalar" style="display:none;">
+          <div class="page-header">
+            <div>
+              <h2 class="page-title">Loyihalar</h2>
+              <p class="page-subtitle">Faol va yakunlangan loyihalaringiz</p>
+            </div>
+            <button class="btn-primary" onclick="openModal('adModal')">
+              <i class="fas fa-plus"></i> Loyiha qo'shish
+            </button>
+          </div>
+
+          <!-- Project Tabs -->
+          <div class="tab-bar" role="tablist">
+            <button role="tab" class="tab-btn active" onclick="filterProjects('active',this)" aria-selected="true">
+              Faol <span class="tab-count" id="activeProjectCount">0</span>
+            </button>
+            <button role="tab" class="tab-btn" onclick="filterProjects('pending',this)" aria-selected="false">
+              Kutilmoqda <span class="tab-count" id="pendingProjectCount">0</span>
+            </button>
+            <button role="tab" class="tab-btn" onclick="filterProjects('done',this)" aria-selected="false">
+              Yakunlangan <span class="tab-count" id="doneProjectCount">0</span>
+            </button>
+          </div>
+
+          <div id="projectsGrid" class="projects-grid" role="list">
+            <!-- Populated by script.js -->
+          </div>
+        </section>
+
+        <!-- ╔══════════════════════════════════
+             § YANGILIKLAR (News)
+        ══════════════════════════════════╗ -->
+        <section id="yangiliklar" class="section" aria-label="Yangiliklar" style="display:none;">
+          <div class="page-header">
+            <div>
+              <h2 class="page-title">Yangiliklar</h2>
+              <p class="page-subtitle">Qurilish bozori va platforma yangiliklari</p>
+            </div>
+            <button class="btn-ghost-sm" onclick="markAllRead()"><i class="fas fa-check-double"></i> Hammasini o'qildi</button>
+          </div>
+
+          <div class="news-layout">
+            <div id="newsGrid" class="news-grid" role="list">
+              <!-- Populated by script.js -->
+            </div>
+            <aside class="news-sidebar">
+              <div class="widget-card">
+                <div class="widget-header"><span class="widget-title">Trendlar</span></div>
+                <ul class="trends-list" id="newsTrends" role="list"></ul>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <!-- ╔══════════════════════════════════
+             § SEVIMLILAR (Favorites)
+        ══════════════════════════════════╗ -->
+        <section id="sevimlilari" class="section" aria-label="Sevimlilar" style="display:none;">
+          <div class="page-header">
+            <div>
+              <h2 class="page-title">Sevimlilar</h2>
+              <p class="page-subtitle">Saqlangan ustalar va mahsulotlar</p>
+            </div>
+          </div>
+          <div class="tab-bar" role="tablist">
+            <button role="tab" class="tab-btn active" onclick="filterFavs('masters',this)">Ustalar</button>
+            <button role="tab" class="tab-btn" onclick="filterFavs('products',this)">Mahsulotlar</button>
+            <button role="tab" class="tab-btn" onclick="filterFavs('posts',this)">E'lonlar</button>
+          </div>
+          <div id="favsGrid" class="masters-grid" role="list">
+            <!-- Populated by script.js -->
+          </div>
+        </section>
+
+        <!-- ╔══════════════════════════════════
+             § PROFIL (User Profile)
+        ══════════════════════════════════╗ -->
+        <section id="profil" class="section" aria-label="Profil" style="display:none;">
+
+          <!-- Auth gate (logged out) -->
+          <div id="profilAuthGate" class="auth-gate-card">
+            <div class="ag-icon"><i class="fas fa-user-lock"></i></div>
+            <h3>Profilingizga kiring</h3>
+            <p>Barcha xususiyatlardan foydalanish uchun tizimga kiring yoki ro'yxatdan o'ting.</p>
+            <button class="btn-primary" onclick="openModal('authModal')">
+              <i class="fas fa-sign-in-alt"></i> Kirish
+            </button>
+            <button class="btn-ghost" onclick="openModal('authModal'); switchAuthTab('register')">
+              Ro'yxatdan o'tish
+            </button>
+          </div>
+
+          <!-- Real profile (logged in) -->
+          <div id="profilContent" style="display:none;">
+            <!-- Profile Cover + Avatar -->
+            <div class="profile-cover-area">
+              <div class="profile-cover" id="profileCover">
+                <button class="btn-change-cover" onclick="changeCoverPhoto()" aria-label="Muqova rasmini o'zgartirish">
+                  <i class="fas fa-camera"></i>
+                </button>
+              </div>
+              <div class="profile-identity">
+                <div class="profile-avatar-wrap">
+                  <img src="" alt="Profil rasmi" class="profile-avatar" id="profileAvatar" />
+                  <button class="btn-change-avatar" onclick="changeAvatar()" aria-label="Rasmni o'zgartirish">
+                    <i class="fas fa-camera"></i>
+                  </button>
+                </div>
+                <div class="profile-meta">
+                  <h2 id="profileName">Foydalanuvchi</h2>
+                  <span class="profile-role-badge" id="profileRoleBadge">Mijoz</span>
+                  <p class="profile-bio" id="profileBio">Bio qo'shilmagan</p>
+                </div>
+                <div class="profile-header-actions">
+                  <button class="btn-primary" onclick="openModal('editProfileModal')">
+                    <i class="fas fa-edit"></i> Tahrirlash
+                  </button>
+                  <button class="btn-ghost-sm" onclick="shareProfile()">
+                    <i class="fas fa-share-alt"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="profile-stats-bar">
+              <div class="ps-stat"><strong id="psPostCount">0</strong><span>E'lonlar</span></div>
+              <div class="ps-stat"><strong id="psRating">0.0</strong><span>Reyting</span></div>
+              <div class="ps-stat"><strong id="psReviews">0</strong><span>Sharhlar</span></div>
+              <div class="ps-stat"><strong id="psCompleted">0</strong><span>Yakunlangan</span></div>
+            </div>
+
+            <!-- Profile Tabs -->
+            <div class="tab-bar" role="tablist">
+              <button role="tab" class="tab-btn active" onclick="filterProfileTab('posts',this)">E'lonlar</button>
+              <button role="tab" class="tab-btn" onclick="filterProfileTab('reviews',this)">Sharhlar</button>
+              <button role="tab" class="tab-btn" onclick="filterProfileTab('info',this)">Ma'lumot</button>
+              <button role="tab" class="tab-btn" onclick="filterProfileTab('portfolio',this)">Portfolio</button>
+            </div>
+
+            <div id="profileTabContent" class="profile-tab-content">
+              <!-- Populated by script.js -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ╔══════════════════════════════════
+             § SOZLAMALAR (Settings)
+        ══════════════════════════════════╗ -->
+        <section id="sozlamalar" class="section" aria-label="Sozlamalar" style="display:none;">
+          <div class="page-header">
+            <div>
+              <h2 class="page-title">Sozlamalar</h2>
+              <p class="page-subtitle">Platformani o'zingizga moslang</p>
+            </div>
+          </div>
+
+          <div class="settings-grid">
+
+            <!-- Appearance -->
+            <div class="settings-card">
+              <div class="sc-icon purple"><i class="fas fa-palette"></i></div>
+              <div class="sc-body">
+                <h4>Ko'rinish</h4>
+                <div class="setting-row">
+                  <span>Tungi rejim</span>
+                  <label class="toggle-switch" aria-label="Tungi rejim">
+                    <input type="checkbox" id="darkModeToggle" onchange="toggleTheme()" />
+                    <span class="toggle-thumb"></span>
+                  </label>
+                </div>
+                <div class="setting-row">
+                  <span>Kompakt ko'rinish</span>
+                  <label class="toggle-switch" aria-label="Kompakt ko'rinish">
+                    <input type="checkbox" id="compactToggle" onchange="toggleCompact()" />
+                    <span class="toggle-thumb"></span>
+                  </label>
+                </div>
+                <div class="setting-row">
+                  <span>Til</span>
+                  <select class="select-inline" onchange="changeLanguage(this.value)" aria-label="Til tanlash">
+                    <option value="uz">O'zbekcha</option>
+                    <option value="ru">Русский</option>
+                    <option value="en">English</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Notifications -->
+            <div class="settings-card">
+              <div class="sc-icon amber"><i class="fas fa-bell"></i></div>
+              <div class="sc-body">
+                <h4>Bildirishnomalar</h4>
+                <div class="setting-row">
+                  <span>Push bildirishnomalar</span>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="notifPushToggle" checked onchange="saveNotifSettings()" />
+                    <span class="toggle-thumb"></span>
+                  </label>
+                </div>
+                <div class="setting-row">
+                  <span>Xabar ovozi</span>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="notifSoundToggle" checked onchange="saveNotifSettings()" />
+                    <span class="toggle-thumb"></span>
+                  </label>
+                </div>
+                <div class="setting-row">
+                  <span>Email xabarlar</span>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="notifEmailToggle" onchange="saveNotifSettings()" />
+                    <span class="toggle-thumb"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Privacy -->
+            <div class="settings-card">
+              <div class="sc-icon blue"><i class="fas fa-shield-alt"></i></div>
+              <div class="sc-body">
+                <h4>Maxfiylik</h4>
+                <div class="setting-row">
+                  <span>Profilni yashirish</span>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="hideProfileToggle" onchange="savePrivacy()" />
+                    <span class="toggle-thumb"></span>
+                  </label>
+                </div>
+                <div class="setting-row">
+                  <span>Onlayn statusni ko'rsatish</span>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="showOnlineToggle" checked onchange="savePrivacy()" />
+                    <span class="toggle-thumb"></span>
+                  </label>
+                </div>
+                <button class="btn-ghost-sm" onclick="openModal('changePassModal')">Parolni o'zgartirish</button>
+              </div>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="settings-card danger">
+              <div class="sc-icon red"><i class="fas fa-exclamation-triangle"></i></div>
+              <div class="sc-body">
+                <h4>Xavfli zona</h4>
+                <p class="sc-desc">Bu amallar qaytarib bo'lmaydi.</p>
+                <div class="danger-actions">
+                  <button class="btn-danger-outline" onclick="confirmClearData()">
+                    <i class="fas fa-broom"></i> Ma'lumotlarni tozalash
+                  </button>
+                  <button class="btn-danger" onclick="confirmDeleteAccount()">
+                    <i class="fas fa-user-slash"></i> Hisobni o'chirish
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- App Info -->
+          <div class="app-info-footer">
+            <span>TORVEX v2.0.0</span>
+            <a href="#" onclick="openModal('aboutModal')">Haqida</a>
+            <a href="#" onclick="openModal('privacyModal')">Maxfiylik siyosati</a>
+            <a href="#" onclick="openModal('termsModal')">Foydalanish shartlari</a>
+          </div>
+        </section>
+
+      </main><!-- /sections-wrapper -->
+    </div><!-- /content-area -->
+  </div><!-- /app-shell -->
+
+  <!-- ════════════════════════════════════════════════
+       FLOATING ACTION BUTTON
+  ════════════════════════════════════════════════ -->
+  <div class="fab-container" id="fabContainer">
+    <button class="fab-main-btn" onclick="toggleFabMenu()" aria-label="Tezkor harakatlar" aria-expanded="false" id="fabMainBtn">
+      <i class="fas fa-plus" id="fabIcon"></i>
+    </button>
+    <div class="fab-menu" id="fabMenu" aria-label="FAB menyusi">
+      <button class="fab-item" onclick="openComposer(); closeFabMenu()" aria-label="E'lon yozish">
+        <span class="fab-item-label">E'lon</span>
+        <span class="fab-item-icon blue"><i class="fas fa-pencil-alt"></i></span>
+      </button>
+      <button class="fab-item" onclick="showSection('bozor'); closeFabMenu()" aria-label="Bozor">
+        <span class="fab-item-label">Bozor</span>
+        <span class="fab-item-icon green"><i class="fas fa-store"></i></span>
+      </button>
+      <button class="fab-item" onclick="showSection('muhokama'); closeFabMenu()" aria-label="Xabar">
+        <span class="fab-item-label">Xabar</span>
+        <span class="fab-item-icon purple"><i class="fas fa-comment"></i></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════
+       MODALS
+  ════════════════════════════════════════════════ -->
+
+  <!-- ── AUTH MODAL ──────────────────────────────── -->
+  <div class="modal-overlay" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authModalTitle" onclick="handleOverlayClick(event,'authModal')">
+    <div class="modal-box auth-modal-box">
+      <button class="modal-close" onclick="closeModal('authModal')" aria-label="Yopish">&times;</button>
+
+      <div class="auth-brand">
+        <svg class="auth-logo-mark" viewBox="0 0 40 40" fill="none">
+          <rect x="2" y="2" width="16" height="16" rx="3"/>
+          <rect x="22" y="2" width="16" height="16" rx="3" opacity=".6"/>
+          <rect x="2" y="22" width="16" height="16" rx="3" opacity=".6"/>
+          <rect x="22" y="22" width="16" height="16" rx="3" opacity=".3"/>
+        </svg>
+        <span>TORVEX</span>
+      </div>
+
+      <h2 id="authModalTitle" class="auth-title">Xush kelibsiz!</h2>
+      <p class="auth-subtitle" id="authSubtitle">Davom etish uchun hisobingizga kiring</p>
+
+      <!-- Tabs -->
+      <div class="auth-tabs" role="tablist">
+        <button role="tab" class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')" aria-selected="true">Kirish</button>
+        <button role="tab" class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')" aria-selected="false">Ro'yxat</button>
+      </div>
+
+      <form id="authForm" onsubmit="handleAuth(event)" novalidate>
+        <!-- Email -->
+        <div class="form-field">
+          <label for="authEmail"><i class="far fa-envelope"></i> Email</label>
+          <input type="email" id="authEmail" placeholder="example@mail.com" required autocomplete="email" />
+          <span class="field-error" id="authEmailErr"></span>
+        </div>
+        <!-- Password -->
+        <div class="form-field">
+          <label for="authPass"><i class="fas fa-lock"></i> Parol</label>
+          <div class="input-with-toggle">
+            <input type="password" id="authPass" placeholder="••••••••" required autocomplete="current-password" />
+            <button type="button" class="toggle-pass" onclick="togglePasswordVisibility('authPass')" aria-label="Parolni ko'rish">
+              <i class="fas fa-eye" id="authPassEyeIcon"></i>
+            </button>
+          </div>
+          <span class="field-error" id="authPassErr"></span>
+        </div>
+
+        <!-- Register-only fields -->
+        <div id="registerFields" class="register-only" style="display:none;">
+          <div class="form-field">
+            <label for="authName"><i class="far fa-user"></i> To'liq ism</label>
+            <input type="text" id="authName" placeholder="Ali Valiyev" autocomplete="name" />
+          </div>
+          <div class="form-field">
+            <label for="authPhone"><i class="fas fa-phone"></i> Telefon</label>
+            <input type="tel" id="authPhone" placeholder="+998 90 123 45 67" autocomplete="tel" />
+          </div>
+          <div class="form-field">
+            <label for="authRole"><i class="fas fa-briefcase"></i> Rol</label>
+            <select id="authRole">
+              <option value="user">Buyurtmachi (Mijoz)</option>
+              <option value="master">Usta (Mutaxassis)</option>
+              <option value="seller">Sotuvchi (Do'kon)</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="authConfirmPass"><i class="fas fa-lock"></i> Parolni tasdiqlash</label>
+            <input type="password" id="authConfirmPass" placeholder="••••••••" autocomplete="new-password" />
+            <span class="field-error" id="authConfirmPassErr"></span>
+          </div>
+        </div>
+
+        <!-- Login extras -->
+        <div class="auth-options" id="loginOptions">
+          <label class="checkbox-label">
+            <input type="checkbox" id="rememberMe" /> Eslab qolish
+          </label>
+          <a class="link-forgot" onclick="openModal('forgotPassModal')">Parolni unutdingiz?</a>
+        </div>
+
+        <button type="submit" class="btn-auth-submit" id="authBtn">
+          <span id="authBtnText">Kirish</span>
+          <i class="fas fa-spinner fa-spin" id="authSpinner" style="display:none;"></i>
+        </button>
+      </form>
+
+      <div class="auth-divider"><span>yoki davom eting</span></div>
+
+      <div class="social-auth">
+        <button class="social-btn" onclick="loginWithGoogle()">
+          <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707s.102-1.167.282-1.707V4.961H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.039l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.961L3.964 6.293C4.672 4.163 6.656 3.58 9 3.58z"/></svg>
+          Google
+        </button>
+        <button class="social-btn" onclick="loginWithTelegram()">
+          <i class="fab fa-telegram-plane" style="color:#229ED9;"></i> Telegram
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── POST COMPOSER MODAL ────────────────────── -->
+  <div class="modal-overlay" id="composerModal" role="dialog" aria-modal="true" aria-labelledby="composerModalTitle" onclick="handleOverlayClick(event,'composerModal')">
+    <div class="modal-box composer-modal-box">
+      <button class="modal-close" onclick="closeModal('composerModal')" aria-label="Yopish">&times;</button>
+      <h3 id="composerModalTitle" class="modal-title">Yangi E'lon</h3>
+
+      <div class="composer-full">
+        <div class="cf-user-row">
+          <img src="" alt="" class="cf-avatar" id="cfAvatar" />
+          <div>
+            <span class="cf-name" id="cfName">—</span>
+            <select class="select-inline" id="postAudience" aria-label="Ko'rish darajasi">
+              <option value="public">Hammaga ochiq</option>
+              <option value="followers">Obunachilar</option>
+              <option value="private">Shaxsiy</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="cf-type-tabs" role="group" aria-label="E'lon turi">
+          <button class="cf-type-btn active" onclick="setPostType('sale',this)"><i class="fas fa-tag"></i> Sotiladi</button>
+          <button class="cf-type-btn" onclick="setPostType('buy',this)"><i class="fas fa-shopping-bag"></i> Xarid</button>
+          <button class="cf-type-btn" onclick="setPostType('service',this)"><i class="fas fa-tools"></i> Xizmat</button>
+          <button class="cf-type-btn" onclick="setPostType('job',this)"><i class="fas fa-briefcase"></i> Ish</button>
+          <button class="cf-type-btn" onclick="setPostType('news',this)"><i class="fas fa-bullhorn"></i> Xabar</button>
+        </div>
+
+        <textarea
+          id="composerText"
+          class="composer-textarea"
+          placeholder="Nima haqida yozmoqchisiz? Narx, joy, telefon raqamingizni kiriting..."
+          rows="5"
+          maxlength="2000"
+          aria-label="E'lon matni"
+        ></textarea>
+        <span class="char-count"><span id="composerCharCount">0</span>/2000</span>
+
+        <!-- Dynamic extra fields (populated by setPostType) -->
+        <div id="postTypeFields" class="post-type-fields"></div>
+
+        <!-- Image preview -->
+        <div id="composerImagePreview" class="composer-image-preview"></div>
+
+        <div class="composer-bottom-bar">
+          <div class="cbb-left">
+            <label class="btn-icon" aria-label="Rasm yuklash">
+              <i class="fas fa-camera"></i>
+              <input type="file" id="composerImages" multiple accept="image/*" onchange="handleComposerImages(event)" hidden />
+            </label>
+            <button class="btn-icon" onclick="openLocationPicker()" aria-label="Joylashuv">
+              <i class="fas fa-map-marker-alt"></i>
+            </button>
+            <button class="btn-icon" onclick="addPriceField()" aria-label="Narx qo'shish">
+              <i class="fas fa-tag"></i>
+            </button>
+          </div>
+          <button class="btn-primary" onclick="submitPost()">
+            <i class="fas fa-paper-plane"></i> Ulashish
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PRODUCT DETAIL MODAL ───────────────────── -->
+  <div class="modal-overlay" id="productModal" role="dialog" aria-modal="true" aria-labelledby="productModalTitle" onclick="handleOverlayClick(event,'productModal')">
+    <div class="modal-box product-modal-box">
+      <button class="modal-close" onclick="closeModal('productModal')" aria-label="Yopish">&times;</button>
+      <div id="productModalContent">
+        <!-- Populated by script.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MASTER PROFILE MODAL ───────────────────── -->
+  <div class="modal-overlay" id="masterModal" role="dialog" aria-modal="true" aria-labelledby="masterModalTitle" onclick="handleOverlayClick(event,'masterModal')">
+    <div class="modal-box master-modal-box">
+      <button class="modal-close" onclick="closeModal('masterModal')" aria-label="Yopish">&times;</button>
+      <div id="masterModalContent">
+        <!-- Populated by script.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PREMIUM MODAL ──────────────────────────── -->
+  <div class="modal-overlay" id="premiumModal" role="dialog" aria-modal="true" aria-labelledby="premiumModalTitle" onclick="handleOverlayClick(event,'premiumModal')">
+    <div class="modal-box premium-modal-box">
+      <button class="modal-close" onclick="closeModal('premiumModal')" aria-label="Yopish">&times;</button>
+      <div class="premium-header">
+        <span class="premium-crown"><i class="fas fa-crown"></i></span>
+        <h3 id="premiumModalTitle">TORVEX Premium</h3>
+        <p>Imkoniyatlaringizni kengaytiring</p>
+      </div>
+      <div class="premium-plans">
+        <div class="plan-card" data-plan="basic">
+          <div class="plan-name">Basic</div>
+          <div class="plan-price">49 000 <span>so'm/oy</span></div>
+          <ul class="plan-features">
+            <li><i class="fas fa-check"></i> 10 ta e'lon</li>
+            <li><i class="fas fa-check"></i> Reytingda ko'tarilish</li>
+            <li><i class="fas fa-check"></i> Basic badge</li>
+          </ul>
+          <button class="btn-primary" onclick="subscribePlan('basic')">Tanlash</button>
+        </div>
+        <div class="plan-card featured" data-plan="pro">
+          <div class="plan-popular-badge">Mashhur</div>
+          <div class="plan-name">Pro</div>
+          <div class="plan-price">99 000 <span>so'm/oy</span></div>
+          <ul class="plan-features">
+            <li><i class="fas fa-check"></i> Cheksiz e'lonlar</li>
+            <li><i class="fas fa-check"></i> Top reytingda</li>
+            <li><i class="fas fa-check"></i> Pro badge</li>
+            <li><i class="fas fa-check"></i> Analytics</li>
+            <li><i class="fas fa-check"></i> Priority support</li>
+          </ul>
+          <button class="btn-primary" onclick="subscribePlan('pro')">Tanlash</button>
+        </div>
+        <div class="plan-card" data-plan="business">
+          <div class="plan-name">Business</div>
+          <div class="plan-price">249 000 <span>so'm/oy</span></div>
+          <ul class="plan-features">
+            <li><i class="fas fa-check"></i> Hammasi Pro da bor</li>
+            <li><i class="fas fa-check"></i> Reklama paneli</li>
+            <li><i class="fas fa-check"></i> API kirish</li>
+            <li><i class="fas fa-check"></i> Shaxsiy menejer</li>
+          </ul>
+          <button class="btn-primary" onclick="subscribePlan('business')">Tanlash</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SUPPORT MODAL ──────────────────────────── -->
+  <div class="modal-overlay" id="supportModal" role="dialog" aria-modal="true" aria-labelledby="supportModalTitle" onclick="handleOverlayClick(event,'supportModal')">
+    <div class="modal-box support-modal-box">
+      <button class="modal-close" onclick="closeModal('supportModal')" aria-label="Yopish">&times;</button>
+      <h3 id="supportModalTitle" class="modal-title"><i class="fas fa-headset"></i> Yordam markazi</h3>
+      <div class="support-options">
+        <a class="support-item" href="https://t.me/torvex_support" target="_blank" rel="noopener">
+          <span class="si-icon telegram"><i class="fab fa-telegram-plane"></i></span>
+          <div><strong>Telegram</strong><p>@torvex_support — tez javob</p></div>
+          <i class="fas fa-chevron-right"></i>
+        </a>
+        <a class="support-item" href="mailto:support@torvex.uz">
+          <span class="si-icon blue"><i class="fas fa-envelope"></i></span>
+          <div><strong>Email</strong><p>support@torvex.uz</p></div>
+          <i class="fas fa-chevron-right"></i>
+        </a>
+        <div class="support-item" onclick="openLiveChat()">
+          <span class="si-icon green"><i class="fas fa-comments"></i></span>
+          <div><strong>Live Chat</strong><p>Hozir onlayn — 09:00–22:00</p></div>
+          <i class="fas fa-chevron-right"></i>
+        </div>
+      </div>
+      <div class="support-faq">
+        <h4>Ko'p so'raladigan savollar</h4>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <span>Qanday e'lon beraman?</span>
+          <i class="fas fa-chevron-down"></i>
+          <div class="faq-answer">Dashboard → "E'lon berish" tugmasini bosing va formani to'ldiring.</div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <span>Premium obuna qanday ishlaydi?</span>
+          <i class="fas fa-chevron-down"></i>
+          <div class="faq-answer">Premium tanlang, to'lovni amalga oshiring va imkoniyatlar darhol faollashadi.</div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <span>Ustani qanday baholayman?</span>
+          <i class="fas fa-chevron-down"></i>
+          <div class="faq-answer">Usta profili → Sharh qoldirish → yulduz reyting bering.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CART DRAWER ─────────────────────────────── -->
+  <div class="drawer-overlay" id="cartOverlay" onclick="toggleCart()" aria-hidden="true"></div>
+  <div class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-labelledby="cartDrawerTitle">
+    <div class="cd-header">
+      <h3 id="cartDrawerTitle"><i class="fas fa-shopping-cart"></i> Savat</h3>
+      <button onclick="toggleCart()" aria-label="Yopish"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="cd-items" id="cartItems">
+      <div class="cart-empty" id="cartEmpty">
+        <i class="fas fa-shopping-basket"></i>
+        <p>Savat bo'sh</p>
+        <button class="btn-primary" onclick="showSection('bozor'); toggleCart()">Bozorga o'tish</button>
+      </div>
+    </div>
+    <div class="cd-footer" id="cartFooter" style="display:none;">
+      <div class="cd-total">
+        <span>Jami:</span>
+        <strong id="cartTotal">0 so'm</strong>
+      </div>
+      <button class="btn-primary full-width" onclick="checkout()">
+        <i class="fas fa-credit-card"></i> Buyurtma berish
+      </button>
+    </div>
+  </div>
+
+  <!-- ── TOAST NOTIFICATIONS ────────────────────── -->
+  <div class="toast-container" id="toastContainer" role="region" aria-label="Bildirishnomalar" aria-live="polite"></div>
+
+  <!-- ── CONFIRM DIALOG ─────────────────────────── -->
+  <div class="modal-overlay" id="confirmModal" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle" style="display:none;">
+    <div class="modal-box confirm-box">
+      <h3 id="confirmTitle">Tasdiqlash</h3>
+      <p id="confirmMessage">Ushbu amalni bajarishni tasdiqlaysizmi?</p>
+      <div class="confirm-actions">
+        <button class="btn-ghost" onclick="closeModal('confirmModal')">Bekor qilish</button>
+        <button class="btn-danger" id="confirmOkBtn">Tasdiqlash</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════
+       BOTTOM NAVIGATION (Mobile)
+  ════════════════════════════════════════════════ -->
+  <nav class="bottom-nav" id="bottomNav" aria-label="Mobil navigatsiya">
+    <button class="bn-item active" id="bn-dash" onclick="showSection('dash')" aria-label="Dashboard">
+      <i class="fas fa-home"></i>
+      <span>Asosiy</span>
+    </button>
+    <button class="bn-item" id="bn-ustalar" onclick="showSection('ustalar')" aria-label="Ustalar">
+      <i class="fas fa-hard-hat"></i>
+      <span>Ustalar</span>
+    </button>
+    <button class="bn-item bn-center" onclick="toggleFabMenu()" aria-label="E'lon">
+      <span class="bn-fab"><i class="fas fa-plus"></i></span>
+    </button>
+    <button class="bn-item" id="bn-bozor" onclick="showSection('bozor')" aria-label="Bozor">
+      <i class="fas fa-store"></i>
+      <span>Bozor</span>
+    </button>
+    <button class="bn-item" id="bn-profil" onclick="showSection('profil')" aria-label="Profil">
+      <i class="fas fa-user"></i>
+      <span>Profil</span>
+    </button>
+  </nav>
+
+  <!-- ════════════════════════════════════════════════
+       SCRIPTS
+  ════════════════════════════════════════════════ -->
+
+  <script type="module" src="script.js"></script>
+
+</body>
+</html>
